@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+  "name": "Youtube QoL Tweaks",
+  "version": "0.1",
+  "description": "Tweaks for Youtube",
+  "permissions": [
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/feed/subscriptions"],
+      "js": ["scripts/hermitcraftHighlight.js"]
+    }
+  ],
+  "icons": {
+    "128": "logo128x128.png"
+  },
+  "browser_action": {
+    "default_icon": "logo19x19.png",
+    "default_popup": "popup.html"
+  }
+}/*"<all_urls>"*/
