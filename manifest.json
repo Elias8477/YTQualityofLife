@@ -1,15 +1,20 @@
 {
   "manifest_version": 2,
-  "name": "Youtube QoL Tweaks",
+  "name": "Youtube QOLT",
   "version": "0.1",
-  "description": "Tweaks for Youtube",
+  "description": "Youtube Quality of Life Tweaks",
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
   "content_scripts": [
     {
       "matches": ["https://www.youtube.com/feed/subscriptions"],
       "js": ["scripts/hermitcraftHighlight.js"]
+    },
+    {
+      "matches": ["https://www.youtube.com/watch?*&list=*"],
+      "js": ["scripts/playlistRemovePopup.js"]
     }
   ],
   "icons": {
@@ -19,4 +24,4 @@
     "default_icon": "logo19x19.png",
     "default_popup": "popup.html"
   }
-}/*"<all_urls>"*/
+}
