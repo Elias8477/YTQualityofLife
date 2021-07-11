@@ -10,18 +10,18 @@
   "content_scripts": [
     {
       "matches": ["https://www.youtube.com/feed/subscriptions"],
-      "js": ["scripts/hermitcraftHighlight.js"]
+      "js": ["scripts/Highlight.js"]
     },
     {
       "matches": ["https://www.youtube.com/watch?*&list=*"],
-      "js": ["scripts/playlistRemovePopup.js"]
+      "js": ["scripts/PlaylistRemovePopup.js"]
     }
   ],
   "icons": {
-    "128": "logo128x128.png"
+    "128": "images/logo/logo.png"
   },
   "browser_action": {
-    "default_icon": "logo19x19.png",
+    "default_icon": "images/logo/logo.png",
     "default_popup": "popup.html"
   }
 }

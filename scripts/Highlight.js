@@ -3,43 +3,31 @@ const highlightedVideos = [];
 const setup = () => {
     chrome.storage.sync.get(["hermitcraftHighlightToggle"], result => {
         if (result.hermitcraftHighlightToggle) {
-            buildHTMLinjection();
-            hermitcraftHighlight("Hermitcraft");
+            build();
+            highlight("Hermitcraft");
+        }
+    });
 
-            let inputButton = document.getElementById("highlightButton");
-            let inputField = document.getElementById("highlightInput");
-            let resetButton = document.getElementById("resetButton");
-
-            inputButton.addEventListener("click", function () {
-                hermitcraftHighlight(inputField.value)
-            });
-
-            resetButton.addEventListener("click", resetHighlight);
-
-
+    chrome.storage.sync.get(["highlightToggle"], result => {
+        if (result.highlightToggle) {
+            build();
         }
     });
 }
 
-const resetHighlight = () => {
-    for (let i = 0; i < highlightedVideos.length; i++) {
-        highlightedVideos[i].style.backgroundColor = "";
-    }
-    highlightedVideos.length = 0; //TODO change this to be more efficient?
-}
-
-const buildHTMLinjection = () => {
+const build = () => {
+    //building HTML for the subscription page
     let insertdiv = document.getElementById("title-container");
     let wrapper = document.createElement("div");
 
     let inputField = document.createElement("input");
     inputField.setAttribute("id", "highlightInput");
-    inputField.value = "hermitcraft";
+    inputField.placeholder = "keyword";
     inputField.setAttribute("onfocus", "this.value=''")
 
     let inputButton = document.createElement("button");
     inputButton.setAttribute("id", "highlightButton");
-    inputButton.innerHTML = "click";
+    inputButton.innerHTML = "search";
 
     let resetButton = document.createElement("button");
     resetButton.setAttribute("id", "resetButton");
@@ -50,9 +38,25 @@ const buildHTMLinjection = () => {
     wrapper.appendChild(resetButton);
 
     insertdiv.appendChild(wrapper);
+
+    //eventlisteners for buttons or keypresses
+    inputButton.addEventListener("click", buttonClicked => {
+        highlight(inputField.value)
+        inputField.value = ""
+    });
+
+    resetButton.addEventListener("click", resetHighlight);
+
+    inputField.addEventListener("keyup", event => {
+        event.preventDefault();
+        if (event.key === "Enter") {
+            highlight(inputField.value);
+            inputField.value = ""
+        }
+    })
 }
 
-const hermitcraftHighlight = (keyword) => {
+const highlight = (keyword) => {
     //wrapper with junk
     let videoListWrapperJunk = document.getElementsByClassName("style-scope ytd-section-list-renderer");
 
@@ -98,10 +102,11 @@ const hermitcraftHighlight = (keyword) => {
     }
 }
 
-chrome.runtime.onMessage.addListener((message) => {
-    if (message[0] === "buttonClicked") {
-        hermitcraftHighlight(message[1])
+const resetHighlight = () => {
+    for (let i = 0; i < highlightedVideos.length; i++) {
+        highlightedVideos[i].style.backgroundColor = "";
     }
-});
+    highlightedVideos.length = 0;
+}
 
 window.addEventListener("load", setup);
