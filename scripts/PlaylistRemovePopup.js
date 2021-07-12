@@ -20,14 +20,15 @@ const changeDotsToTrashcan = (videos) => {
 }
 
 const deleteVideo = (event) => {
-    if (event.target.tagName === "YT-ICON") {
-        let menu = document.getElementsByTagName("tp-yt-iron-dropdown")[0].children[0].children[0].children[0].children
+    if (event.target.tagName === "YT-ICON" && event.target.className === "style-scope ytd-menu-renderer") {
+        let popupItems = document.getElementsByTagName("ytd-menu-service-item-renderer")
 
+        //searching the right button to click
         let i = 0;
         let found = false;
-        while (!found && i < menu.length) {
-            if (menu[i].children[0].children[1].innerHTML === "Remove from playlist") {
-                menu[i].children[0].click()
+        while (!found && i < popupItems.length) {
+            if (popupItems[i].innerText.trim() === "Remove from playlist") {
+                popupItems[i].click()
             }
             i++;
         }
