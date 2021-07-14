@@ -27,8 +27,10 @@ const deleteVideo = (event) => {
         let i = 0;
         let found = false;
         while (!found && i < popupItems.length) {
-            if (popupItems[i].innerText.trim() === "Remove from playlist") {
+            let popupItemVector = popupItems[i].children[0].children[0].children[0].children[0].children[0].getAttribute("d").trim()
+            if (popupItemVector === "M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z") {
                 popupItems[i].click()
+                found = true;
             }
             i++;
         }
