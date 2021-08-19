@@ -39,7 +39,6 @@ const saveSetting = (element) => {
 const loadSettings = () => {
     chrome.storage.sync.get(null, items => { //An empty list or object will return an empty result object. Pass in null to get the entire contents of storage.
         let allKeys = Object.keys(items);
-        console.log(allKeys) //TODO remove this line in the future
         for (let i = 0; i < allKeys.length; i++) {
             let key = allKeys[i]
 
