@@ -2,13 +2,15 @@ const setup = () => {
     chrome.storage.sync.get(["playlistRemovePopupToggle"], result => {
         if (result.playlistRemovePopupToggle) {
             console.log("PlaylistRemovePopup Enabled");
-            
-            let videos = document.getElementsByTagName("ytd-playlist-panel-video-renderer")
-            changeDotsToTrashcan(videos);
 
-            for (let i = 0; i < videos.length; i++) {
-                videos[i].addEventListener('click', deleteVideo, false);
-            }
+            setTimeout(() => {
+                let videos = document.getElementsByTagName("ytd-playlist-panel-video-renderer")
+                changeDotsToTrashcan(videos);
+    
+                for (let i = 0; i < videos.length; i++) {
+                    videos[i].addEventListener('click', deleteVideo, false);
+                }
+            }, 2000)
         }
     });
 }
