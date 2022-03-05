@@ -6,11 +6,11 @@ const setup = () => {
             setTimeout(() => {
                 let videos = document.getElementsByTagName("ytd-playlist-panel-video-renderer")
                 changeDotsToTrashcan(videos);
-    
+
                 for (let i = 0; i < videos.length; i++) {
                     videos[i].addEventListener('click', deleteVideo, false);
                 }
-            }, 2000)
+            }, 3000)
         }
     });
 }

@@ -16,24 +16,24 @@ const checkSettings = (event) => {
     let hcHighlight = document.getElementById("hermitcraftHighlightToggle")
     let highlight = document.getElementById("highlightToggle")
 
-        if (id === "hermitcraftHighlightToggle") {
-            if (hcHighlight.checked && highlight.checked) {
-                highlight.checked = false;
-                saveSetting(highlight)
-            }
-        } else if (id === "highlightToggle") {
-            if (hcHighlight.checked && highlight.checked) {
-                hcHighlight.checked = false;
-                saveSetting(hcHighlight)
-            }
+    if (id === "hermitcraftHighlightToggle") {
+        if (hcHighlight.checked && highlight.checked) {
+            highlight.checked = false;
+            saveSetting(highlight)
         }
+    } else if (id === "highlightToggle") {
+        if (hcHighlight.checked && highlight.checked) {
+            hcHighlight.checked = false;
+            saveSetting(hcHighlight)
+        }
+    }
 
     saveSetting(element)
 }
 
 const saveSetting = (element) => {
     let id = element.getAttribute("id");
-    chrome.storage.sync.set({[id]: element.checked})
+    chrome.storage.sync.set({ [id]: element.checked })
 }
 
 const loadSettings = () => {

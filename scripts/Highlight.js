@@ -2,18 +2,18 @@ const highlightedVideos = [];
 
 const setup = () => {
     setTimeout(() => {
-    chrome.storage.sync.get(["hermitcraftHighlightToggle"], result => {
-        if (result.hermitcraftHighlightToggle) {
-            build();
-            highlight("Hermitcraft");
-        }
-    });
+        chrome.storage.sync.get(["hermitcraftHighlightToggle"], result => {
+            if (result.hermitcraftHighlightToggle) {
+                build();
+                highlight("Hermitcraft");
+            }
+        });
 
-    chrome.storage.sync.get(["highlightToggle"], result => {
-        if (result.highlightToggle) {
-            build();
-        }
-    });
+        chrome.storage.sync.get(["highlightToggle"], result => {
+            if (result.highlightToggle) {
+                build();
+            }
+        });
     }, 3000);
 }
 
@@ -62,7 +62,7 @@ const highlight = (keyword) => {
     //wrapper with junk
     let videoListWrapperJunk = document.getElementsByClassName("style-scope ytd-section-list-renderer");
 
-//only add wrappers which have videos
+    //only add wrappers which have videos
     let videoListWrapper = []
 
     for (let i = 0; i < videoListWrapperJunk.length; i++) {
@@ -72,7 +72,7 @@ const highlight = (keyword) => {
     }
     videoListWrapper.pop()
 
-//add all videos, of all wrappers, in one array
+    //add all videos, of all wrappers, in one array
     let videosPerWrapper = [];
 
     for (let i = 0; i < videoListWrapper.length; i++) {
