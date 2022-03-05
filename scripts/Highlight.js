@@ -1,6 +1,7 @@
 const highlightedVideos = [];
 
 const setup = () => {
+    setTimeout(() => {
     chrome.storage.sync.get(["hermitcraftHighlightToggle"], result => {
         if (result.hermitcraftHighlightToggle) {
             build();
@@ -13,6 +14,7 @@ const setup = () => {
             build();
         }
     });
+    }, 3000);
 }
 
 const build = () => {
