@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Youtube QOLT",
   "version": "0.1",
   "description": "Youtube Quality of Life Tweaks",
@@ -20,7 +20,7 @@
   "icons": {
     "128": "images/logo/logo.png"
   },
-  "browser_action": {
+  "action": {
     "default_icon": "images/logo/logo.png",
     "default_popup": "popup.html"
   }
