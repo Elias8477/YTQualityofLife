@@ -19,13 +19,15 @@ const setup = () => {
 
 const build = () => {
     //building HTML for the subscription page
-    let insertdiv = document.getElementById("title-container");
+    let insertdiv = document.getElementById("center");
     let wrapper = document.createElement("div");
+    wrapper.setAttribute("id", "highlight");
 
     let inputField = document.createElement("input");
     inputField.setAttribute("id", "highlightInput");
     inputField.placeholder = "keyword";
-    inputField.setAttribute("onfocus", "this.value=''")
+    inputField.setAttribute("onfocus", "this.value=''");
+    inputField.setAttribute("style","margin-left: 10px;")
 
     let inputButton = document.createElement("button");
     inputButton.setAttribute("id", "highlightButton");
