@@ -10,7 +10,8 @@
   "content_scripts": [
     {
       "matches": ["https://www.youtube.com/feed/subscriptions"],
-      "js": ["scripts/Highlight.js"]
+      "js": ["scripts/Highlight.js"],
+      "css": ["styles/Highlight.css"]
     },
     {
       "matches": ["https://www.youtube.com/watch?*&list=*"],

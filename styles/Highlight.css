@@ -1,0 +1,70 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Roboto;
+}
+
+#highlight {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 30px 30px 30px;
+  grid-row-start: 1;
+  grid-row-end: 4;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  column-gap: 2%;
+  row-gap: 5%;
+  background-color: #121212;
+}
+
+#highlightInputWrapper {
+  grid-row-start: 1;
+  grid-row-end: 2;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+#highlightInput {
+  background-color: #121212;
+  margin: 7px;
+  padding-left: 2%;
+  border: none;
+  color: white;
+  width: auto;
+  width: 100%;
+}
+
+.button {
+  background-color: #313131;
+  color: white;
+  /* border: #121212 solid 1px; */
+  border: none;
+}
+
+.button:hover {
+  background-color: #3f3f3f;
+  cursor: pointer;
+}
+
+#highlightButton {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+
+#resetButton {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 2;
+  grid-column-end: 3;
+}
+
+#hermitcraftButton {
+  grid-row-start: 3;
+  grid-row-end: 4;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
