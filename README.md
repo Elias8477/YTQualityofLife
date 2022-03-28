@@ -7,7 +7,7 @@ On first use **all** features are disabled. Click the extension icon in the top 
 
 You can highlight videos on the subscriptions page by writing a keyword in the input field located next to 'TODAY' in your Youtube subscription page.
 Either clicking enter or pressing the search button works.
-### **Note:** this feature has been relocated to the right of the search bar.
+### **Note:** this feature has been relocated to the left (unfolded) sidebar above Home, Explore, Shorts, Subscriptions, ...
 
 ## HermitcraftHighlight
 Videos containing Hermitcraft in their title will automatically be highlighted. Besides that it is identical to the feature mentioned above.
