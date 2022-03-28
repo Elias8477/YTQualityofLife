@@ -4,43 +4,55 @@
   margin: 0;
   padding: 0;
   font-family: Roboto;
+  box-sizing: border-box;
 }
 
-#highlight {
+#wrapper {
+  height: fit-content;
+  padding-left: 20px;
+}
+
+#gridWrapper {
   display: grid;
   grid-template-columns: 50% 50%;
-  grid-template-rows: 30px 30px 30px;
+  grid-template-rows: auto;
   grid-row-start: 1;
   grid-row-end: 4;
   grid-column-start: 1;
   grid-column-end: 3;
-  column-gap: 2%;
-  row-gap: 5%;
   background-color: #121212;
 }
 
-#highlightInputWrapper {
+/* #highlightInputWrapper {
   grid-row-start: 1;
   grid-row-end: 2;
   grid-column-start: 1;
   grid-column-end: 3;
-}
+  height: 30px;
+} */
 
 #highlightInput {
+  grid-row-start: 1;
+  grid-row-end: 2;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  height: 30px;
+  text-align: center;
+  display: block;
+  margin: auto;
   background-color: #121212;
-  margin: 7px;
-  padding-left: 2%;
   border: none;
   color: white;
-  width: auto;
-  width: 100%;
+  padding-top: auto;
+  padding-bottom: auto;
+  width: 90%;
 }
 
 .button {
   background-color: #313131;
   color: white;
-  /* border: #121212 solid 1px; */
   border: none;
+  height: 30px;
 }
 
 .button:hover {

@@ -35,14 +35,17 @@ const build = () => {
     let wrapper = document.createElement("div");
     wrapper.setAttribute("id", "highlight");
 
-    let inputFieldWrapper = document.createElement("div");
-    inputFieldWrapper.setAttribute("id", "highlightInputWrapper");
+    let gridWrapper = document.createElement("div");
+    gridWrapper.setAttribute("id", "gridWrapper");
+
+    /* let inputFieldWrapper = document.createElement("div");
+    inputFieldWrapper.setAttribute("id", "highlightInputWrapper"); */
 
     let inputField = document.createElement("input");
     inputField.setAttribute("id", "highlightInput");
     inputField.placeholder = "keyword";
     inputField.setAttribute("onfocus", "this.value=''");
-    inputFieldWrapper.appendChild(inputField);
+    // inputFieldWrapper.appendChild(inputField);
 
     let inputButton = document.createElement("button");
     inputButton.setAttribute("id", "highlightButton");
@@ -52,17 +55,18 @@ const build = () => {
     let resetButton = document.createElement("button");
     resetButton.setAttribute("id", "resetButton");
     resetButton.setAttribute("class", "button");
-    resetButton.innerHTML = "reset";
+    resetButton.innerHTML = "Reset";
 
     let hermitcraftButton = document.createElement("button");
     hermitcraftButton.setAttribute("id", "hermitcraftButton");
     hermitcraftButton.setAttribute("class", "button");
     hermitcraftButton.innerHTML = "Hermitcraft";
 
-    wrapper.appendChild(inputFieldWrapper);
-    wrapper.appendChild(inputButton);
-    wrapper.appendChild(resetButton);
-    if (option === "HermitcraftHighlight") wrapper.appendChild(hermitcraftButton);
+    gridWrapper.appendChild(inputField);
+    gridWrapper.appendChild(inputButton);
+    gridWrapper.appendChild(resetButton);
+    if (option === "HermitcraftHighlight") gridWrapper.appendChild(hermitcraftButton);
+    wrapper.appendChild(gridWrapper);
 
     insertdiv.insertBefore(wrapper, insertdiv.firstChild);
 
