@@ -1,15 +1,15 @@
 const highlightedVideos = [];
 let option;
 
-const setup = () => {
+const highlightsSetup = () => {
     //checking which option has been selected
-    chrome.storage.sync.get(["hermitcraftHighlightToggle"], result => {
-        if (result.hermitcraftHighlightToggle) {
+    chrome.storage.sync.get(["HermitcraftHighlightToggle"], result => {
+        if (result.HermitcraftHighlightToggle) {
             setOption("HermitcraftHighlight");
         }
     });
 
-    chrome.storage.sync.get(["highlightToggle"], result => {
+    chrome.storage.sync.get(["HighlightToggle"], result => {
         if (result.highlightToggle) {
             setOption("Highlight");
         }
@@ -148,18 +148,18 @@ const highlight = (keyword) => {
     }
 
     let currentVideo = "";
-    let videotitel = "";
-    let videotitelsplit = "";
+    let videoTitle = "";
+    let videoTitleSplit = "";
 
     for (let i = 0; i < videosPerWrapper.length; i++) {
         for (let j = 0; j < videosPerWrapper[i].length; j++) {
             currentVideo = videosPerWrapper[i][j]
-            videotitel = currentVideo.children[0].children[1].children[0].children[0].children[1].ariaLabel;
-            videotitelsplit = videotitel.split(" ");
+            videoTitle = currentVideo.children[0].children[1].children[0].children[0].children[1].ariaLabel;
+            videoTitleSplit = videoTitle.split(" ");
             let titelContainsKeyword = false;
             let k = 0;
-            while (!titelContainsKeyword && k < videotitelsplit.length) {
-                if (videotitelsplit[k].toLowerCase() === keyword.toLowerCase()) {
+            while (!titelContainsKeyword && k < videoTitleSplit.length) {
+                if (videoTitleSplit[k].toLowerCase() === keyword.toLowerCase()) {
                     titelContainsKeyword = true;
 
                     currentVideo.style.backgroundColor = "red";
@@ -178,4 +178,4 @@ const resetHighlight = () => {
     highlightedVideos.length = 0;
 }
 
-window.addEventListener("load", setup);
+window.addEventListener("load", highlightsSetup);

@@ -1,4 +1,4 @@
-const setup = () => {
+const popupSetup = () => {
     loadSettings()
 
     //when checkbox is pressed save its state to chrome.storage
@@ -13,15 +13,15 @@ const setup = () => {
 const checkSettings = (event) => {
     let element = event.target
     let id = element.getAttribute("id")
-    let hcHighlight = document.getElementById("hermitcraftHighlightToggle")
-    let highlight = document.getElementById("highlightToggle")
+    let hcHighlight = document.getElementById("HermitcraftHighlightToggle")
+    let highlight = document.getElementById("HighlightToggle")
 
-    if (id === "hermitcraftHighlightToggle") {
+    if (id === "HermitcraftHighlightToggle") {
         if (hcHighlight.checked && highlight.checked) {
             highlight.checked = false;
             saveSetting(highlight)
         }
-    } else if (id === "highlightToggle") {
+    } else if (id === "HighlightToggle") {
         if (hcHighlight.checked && highlight.checked) {
             hcHighlight.checked = false;
             saveSetting(hcHighlight)
@@ -60,4 +60,4 @@ const resetToDefault = () => {
     }
 }
 
-window.addEventListener("load", setup);
+window.addEventListener("load", popupSetup);
