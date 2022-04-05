@@ -20,7 +20,7 @@ const highlightsSetup = () => {
             highlight("Hermitcraft");
         }
 
-        if (option != undefined) build();
+        if (option != undefined) buildHTML();
     }, 3000);
 }
 
@@ -28,16 +28,16 @@ const setOption = (o) => {
     option = o;
 };
 
-const build = () => {
+const buildHTML = () => {
     console.log("Highlights Enabled");
-    
+
     //building HTML for the subscription page
     let insertdiv = document.getElementById("guide-inner-content");
-    
+
     let wrapper = document.createElement("div");
     wrapper.setAttribute("id", "highlight");
     insertdiv.insertBefore(wrapper, insertdiv.firstChild);
-    
+
     let gridWrapper = document.createElement("div");
     gridWrapper.setAttribute("id", "gridWrapper");
     wrapper.appendChild(gridWrapper);
@@ -53,7 +53,7 @@ const build = () => {
     let searchButton = document.createElement("button");
     searchButton.setAttribute("id", "highlightButton");
     searchButton.setAttribute("class", "button");
-    
+
     let searchIcon = createIcon("#ffffff", "M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z");
     searchButton.appendChild(searchIcon);
 
@@ -62,13 +62,13 @@ const build = () => {
     searchText.setAttribute("class", "buttonText");
     searchButton.appendChild(searchText);
     gridWrapper.appendChild(searchButton);
-    
+
 
     //reset button
     let resetButton = document.createElement("button");
     resetButton.setAttribute("id", "resetButton");
     resetButton.setAttribute("class", "button");
-    
+
     let resetIcon = createIcon("#ffffff", "M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z; M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z");
     resetButton.appendChild(resetIcon)
 
@@ -102,7 +102,7 @@ const build = () => {
     });
 
     resetButton.addEventListener("click", resetHighlight);
-    
+
     if (option === "HermitcraftHighlight") hermitcraftButton.addEventListener("click", () => highlight("Hermitcraft"));
 }
 
@@ -126,50 +126,30 @@ const createIcon = (color, dStrings) => {
 }
 
 const highlight = (keyword) => {
-    //wrapper with junk
-    let videoListWrapperJunk = document.getElementsByClassName("style-scope ytd-section-list-renderer");
-
-    //only add wrappers which have videos
-    let videoListWrapper = []
-
-    for (let i = 0; i < videoListWrapperJunk.length; i++) {
-        if (videoListWrapperJunk[i].getAttribute("id") == null) {
-            videoListWrapper.push(videoListWrapperJunk[i])
-        }
-    }
-    videoListWrapper.pop()
-
-    //add all videos, of all wrappers, in one array
-    let videosPerWrapper = [];
-
-    for (let i = 0; i < videoListWrapper.length; i++) {
-        videosPerWrapper.push(videoListWrapper[i].childNodes[5].children[0].children[0].children[1].children[0].children[1].children)
-
-    }
+    let videos = document.getElementsByTagName("ytd-grid-video-renderer");
 
     let currentVideo = "";
     let videoTitle = "";
     let videoTitleSplit = "";
 
-    for (let i = 0; i < videosPerWrapper.length; i++) {
-        for (let j = 0; j < videosPerWrapper[i].length; j++) {
-            currentVideo = videosPerWrapper[i][j]
-            videoTitle = currentVideo.children[0].children[1].children[0].children[0].children[1].ariaLabel;
-            videoTitleSplit = videoTitle.split(" ");
-            let titelContainsKeyword = false;
-            let k = 0;
-            while (!titelContainsKeyword && k < videoTitleSplit.length) {
-                if (videoTitleSplit[k].toLowerCase() === keyword.toLowerCase()) {
-                    titelContainsKeyword = true;
+    for (let i = 0; i < videos.length; i++) {
+        currentVideo = videos[i]
+        videoTitle = currentVideo.children[0].children[1].children[0].children[0].children[1].ariaLabel;
+        videoTitleSplit = videoTitle.split(" ");
+        let titleContainsKeyword = false;
+        let j = 0;
+        while (!titleContainsKeyword && j < videoTitleSplit.length) {
+            if (videoTitleSplit[j].toLowerCase() === keyword.toLowerCase()) {
+                titleContainsKeyword = true;
 
-                    currentVideo.style.backgroundColor = "red";
-                    highlightedVideos.push(currentVideo);
-                }
-                k++
+                currentVideo.style.backgroundColor = "red";
+                highlightedVideos.push(currentVideo);
             }
+            j++
         }
     }
 }
+
 
 const resetHighlight = () => {
     for (let i = 0; i < highlightedVideos.length; i++) {

@@ -39,11 +39,10 @@ const getTotalTimeStatusInSeconds = () => {
 }
 
 const getPlaybackSpeed = () => {
-    return document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate;
+    // return document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate;
 }
 
 const format = (input) => {
-    //FIXME please
     let hours = 0;
     let minutes = 0;
     let seconds = 0;
@@ -63,10 +62,10 @@ const format = (input) => {
     return `${hours}:${minutes}:${seconds}`;
 }
 
-const addToPage = (totalSeconds) => {
+const addToPage = (totalTime) => {
     let playlistPanelTitle = document.getElementsByClassName("title style-scope ytd-playlist-panel-renderer complex-string")[0].children[0];
 
-    playlistPanelTitle.innerHTML = `${playlistPanelTitle.innerHTML} (${totalSeconds})`
+    playlistPanelTitle.innerHTML = `${playlistPanelTitle.innerHTML} (${totalTime})`
 }
 
 window.addEventListener("load", PlaylistWatchtimeCounterSetup);
