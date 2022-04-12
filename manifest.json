@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Youtube QOLT",
-  "version": "1.3.0",
+  "version": "1.0.0",
   "description": "Youtube Quality of Life Tweaks",
   "permissions": [
     "activeTab",
@@ -15,7 +15,7 @@
     },
     {
       "matches": ["https://www.youtube.com/watch?*&list=*"],
-      "js": ["scripts/PlaylistRemovePopup.js", "scripts/PlaylistWatchtimeCounter.js"]
+      "js": ["scripts/PlaylistRemovePopup.js", "scripts/PlaylistTotalWatchtimeCounter.js", "scripts/PlaylistAutoplayDisabled.js"]
     }
   ],
   "icons": {

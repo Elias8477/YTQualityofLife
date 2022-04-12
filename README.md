@@ -5,12 +5,15 @@ On first use **all** features are disabled. Click the extension icon in the top 
 ## Highlight
 ![preview of Highlight feature](https://raw.githubusercontent.com/Elias8477/ReadmeImages/main/YTQualityofLife/Highlight-preview.gif)
 
-You can highlight videos on the subscriptions page by writing a keyword in the input field located next to 'TODAY' in your Youtube subscription page.
-Either clicking enter or pressing the search button works.
-### **Note:** this feature has been relocated to the left (unfolded) sidebar above Home, Explore, Shorts, Subscriptions, ...
+You can highlight videos on the subscriptions page by writing a keyword in the input field located in the left (unfolded) sidebar above Home, Explore, Shorts, Subscriptions, ...
 
 ## HermitcraftHighlight
 Videos containing Hermitcraft in their title will automatically be highlighted. Besides that it is identical to the feature mentioned above.
+
+## PlaylistAutoplayDisabled
+![preview of PlaylistAutoplayDisabled feature](https://raw.githubusercontent.com/Elias8477/ReadmeImages/main/YTQualityofLife/PlaylistAutoplayDisabled-preview.gif)
+
+You can disable autoplay when watching videos normally. But when a video ends inside a playlist it automatically starts the next one. This feature automatically stops the video a few seconds before the end so you can peacefully scroll through the comments without being brought to the next video.
 
 ## PlaylistRemovePopup
 ![preview of PlaylistRemovePopup feature](https://raw.githubusercontent.com/Elias8477/ReadmeImages/main/YTQualityofLife/PlaylistRemovePopup-preview.gif)
@@ -18,14 +21,19 @@ Videos containing Hermitcraft in their title will automatically be highlighted. 
 When watching a video that's inside a playlist / Watch Later,
 Youtube decided it was a great idea to remove the trashcan to a popup instead of directly next to the video preview. Once this feature is enabled the popup will be disabled and you'll now be able to delete videos by clicking on the trashcan like before.
 
+## PlaylistTotalWatchtimeCounter
+![preview of PlaylistTotalWatchtimeCounter feature](https://raw.githubusercontent.com/Elias8477/ReadmeImages/main/YTQualityofLife/PlaylistTotalWatchtimeCounter-preview.gif)
+
+Displays the total watchtime of a playlist next to its title.
+
 # How to install
 
 I can't upload to the Chrome Webstore because of a registration fee. You'll have to install the extension by enabling developer options.
 
 ![preview of how to install](https://raw.githubusercontent.com/Elias8477/ReadmeImages/main/YTQualityofLife/how-to-install.gif)
 
-1. Download the latest files. You can find them on the [releases](https://github.com/Elias8477/YTQualityofLife/releases) page under "Assets".
-2. Unzip and place all files in a folder you've created on a desired location. (Or clone the repository on your machine.)
+1. Download the latest files. You can find them on the [releases](https://github.com/Elias8477/YTQualityofLife/releases) page under "Assets". (Or clone the repository on your machine.)
+2. Unzip and place all files in a folder you've created on a desired location.
 3. Go to chrome://extensions
 4. Click "developer mode" in the top right corner. With dev mode enabled you can use extensions that aren't packed.
 5. Click "load unpacked" in the top left corner. Select the folder where you've downloaded all files in.
