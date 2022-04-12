@@ -1,4 +1,5 @@
 const highlightedVideos = [];
+const keywords = [];
 let option;
 
 const highlightsSetup = () => {
@@ -17,16 +18,28 @@ const highlightsSetup = () => {
 
     setTimeout(() => {
         if (option === "HermitcraftHighlight") {
-            highlight("Hermitcraft");
+            highlight("hermitcraft");
         }
 
         if (option != undefined) buildHTML();
+
+        setObservers();
     }, 3000);
 }
 
 const setOption = (o) => {
     option = o;
-};
+}
+
+const setObservers = () => {
+    //when new content is loaded by scrolling down, observer triggers and highlights newly loaded videos
+    let observer = new MutationObserver(() => {
+        keywords.forEach(keyword => highlight(keyword));
+    });
+
+    let sectionRendererList = document.getElementById("contents");
+    observer.observe(sectionRendererList, { childList: true });
+}
 
 const buildHTML = () => {
     console.log("Highlights Enabled");
@@ -91,13 +104,13 @@ const buildHTML = () => {
     inputField.addEventListener("keyup", event => {
         event.preventDefault();
         if (event.key === "Enter") {
-            highlight(inputField.value);
+            highlight(inputField.value.toLowerCase());
             inputField.value = ""
         }
     });
 
     searchButton.addEventListener("click", () => {
-        highlight(inputField.value)
+        highlight(inputField.value.toLowerCase());
         inputField.value = ""
     });
 
@@ -127,27 +140,31 @@ const createIcon = (color, dStrings) => {
 
 const highlight = (keyword) => {
     let videos = document.getElementsByTagName("ytd-grid-video-renderer");
-
+    
     let currentVideo = "";
     let videoTitle = "";
     let videoTitleSplit = "";
-
+    
     for (let i = 0; i < videos.length; i++) {
         currentVideo = videos[i]
-        videoTitle = currentVideo.children[0].children[1].children[0].children[0].children[1].ariaLabel;
+        videoTitle = currentVideo.querySelector(`a[id^="video-title"]`).innerHTML;
         videoTitleSplit = videoTitle.split(" ");
         let titleContainsKeyword = false;
         let j = 0;
+        
         while (!titleContainsKeyword && j < videoTitleSplit.length) {
-            if (videoTitleSplit[j].toLowerCase() === keyword.toLowerCase()) {
+            if (videoTitleSplit[j].toLowerCase() === keyword) {
+                if(highlightedVideos.includes(currentVideo)) break;
                 titleContainsKeyword = true;
-
+                
                 currentVideo.style.backgroundColor = "red";
                 highlightedVideos.push(currentVideo);
             }
             j++
         }
     }
+    
+    if(!keywords.includes(keyword)) keywords.push(keyword);
 }
 
 
@@ -156,6 +173,7 @@ const resetHighlight = () => {
         highlightedVideos[i].style.backgroundColor = "";
     }
     highlightedVideos.length = 0;
+    keywords.length = 0;
 }
 
 window.addEventListener("load", highlightsSetup);
