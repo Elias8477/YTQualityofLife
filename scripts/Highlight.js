@@ -2,7 +2,7 @@ const highlightedVideos = [];
 const keywords = [];
 let option;
 
-const highlightsSetup = () => {
+const highlightSetup = () => {
     //checking which option has been selected
     chrome.storage.sync.get(["HermitcraftHighlightToggle"], result => {
         if (result.HermitcraftHighlightToggle) {
@@ -23,7 +23,7 @@ const highlightsSetup = () => {
 
         if (option != undefined) buildHTML();
 
-        setObservers();
+        setHighlightObservers();
     }, 3000);
 }
 
@@ -31,18 +31,16 @@ const setOption = (o) => {
     option = o;
 }
 
-const setObservers = () => {
+const setHighlightObservers = () => {
     //when new content is loaded by scrolling down, observer triggers and highlights newly loaded videos
-    let observer = new MutationObserver(() => {
-        keywords.forEach(keyword => highlight(keyword));
-    });
-
     let sectionRendererList = document.getElementById("contents");
-    observer.observe(sectionRendererList, { childList: true });
+    new MutationObserver(() => {
+        keywords.forEach(keyword => highlight(keyword));
+    }).observe(sectionRendererList, { childList: true });
 }
 
 const buildHTML = () => {
-    console.log("Highlights Enabled");
+    console.log("Highlight Enabled");
 
     //building HTML for the subscription page
     let insertdiv = document.getElementById("guide-inner-content");
@@ -140,31 +138,31 @@ const createIcon = (color, dStrings) => {
 
 const highlight = (keyword) => {
     let videos = document.getElementsByTagName("ytd-grid-video-renderer");
-    
+
     let currentVideo = "";
     let videoTitle = "";
     let videoTitleSplit = "";
-    
+
     for (let i = 0; i < videos.length; i++) {
         currentVideo = videos[i]
         videoTitle = currentVideo.querySelector(`a[id^="video-title"]`).innerHTML;
         videoTitleSplit = videoTitle.split(" ");
         let titleContainsKeyword = false;
         let j = 0;
-        
+
         while (!titleContainsKeyword && j < videoTitleSplit.length) {
             if (videoTitleSplit[j].toLowerCase() === keyword) {
-                if(highlightedVideos.includes(currentVideo)) break;
+                if (highlightedVideos.includes(currentVideo)) break;
                 titleContainsKeyword = true;
-                
+
                 currentVideo.style.backgroundColor = "red";
                 highlightedVideos.push(currentVideo);
             }
             j++
         }
     }
-    
-    if(!keywords.includes(keyword)) keywords.push(keyword);
+
+    if (!keywords.includes(keyword)) keywords.push(keyword);
 }
 
 
@@ -176,4 +174,4 @@ const resetHighlight = () => {
     keywords.length = 0;
 }
 
-window.addEventListener("load", highlightsSetup);
+window.addEventListener("load", highlightSetup);

@@ -9,19 +9,17 @@ const PlaylistAutoplayDisabledSetup = () => {
         if (result.PlaylistAutoplayDisabledToggle) {
             console.log("PlaylistAutoplayDisabled Enabled");
 
-            setObservers();
+            setPlaylistAutoplayDisabledObservers();
             checkVideoStatus();
         }
     });
 }
 
-const setObservers = () => {
+const setPlaylistAutoplayDisabledObservers = () => {
     //observer to detect playtime change
-    let observer = new MutationObserver((mutationsList) => {
+    new MutationObserver((mutationsList) => {
         currentTime = convertToSeconds(mutationsList[0].target.innerText);
-    });
-
-    observer.observe(currentTimeElement, { characterData: true, childList: true });
+    }).observe(currentTimeElement, { characterData: true, childList: true });
 }
 
 const checkVideoStatus = () => {
