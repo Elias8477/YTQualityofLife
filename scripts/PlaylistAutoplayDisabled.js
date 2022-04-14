@@ -2,7 +2,7 @@ const currentTimeElement = document.getElementsByClassName("ytp-time-current")[0
 const videoElement = document.getElementsByTagName("video")[0];
 let currentTime = 0;
 let totalTime = 0;
-let interval;
+let interval = false;
 
 const PlaylistAutoplayDisabledSetup = () => {
     chrome.storage.sync.get(["PlaylistAutoplayDisabledToggle"], result => {
@@ -23,14 +23,15 @@ const setPlaylistAutoplayDisabledObservers = () => {
 }
 
 const checkVideoStatus = () => {
-    interval = setInterval(checkTimeLeft, 1000);
+    if (!interval) interval = setInterval(checkTimeLeft, 1000);
 
     videoElement.addEventListener("play", () => {
-        interval = setInterval(checkTimeLeft, 1000);
+        if (!interval) interval = setInterval(checkTimeLeft, 1000);
     });
 
     videoElement.addEventListener("pause", () => {
         clearInterval(interval);
+        interval = false;
     });
 }
 
