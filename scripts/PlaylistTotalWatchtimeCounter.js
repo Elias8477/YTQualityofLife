@@ -33,7 +33,7 @@ const setPlaylistTotalWatchtimeCounterObservers = () => {
                 addToPage(totalSeconds);
             }
         }, 5000);
-        //FIXME check if observing on document is resource intensive
+        //TODO check if observing on document is resource intensive
     }).observe(document, { subtree: true, childList: true });
 }
 

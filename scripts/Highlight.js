@@ -1,5 +1,5 @@
-const highlightedVideos = [];
-const keywords = [];
+let highlightedVideos = [];
+let keywords = [];
 let option;
 
 const highlightSetup = () => {
@@ -17,11 +17,8 @@ const highlightSetup = () => {
     });
 
     setTimeout(() => {
-        if (option === "HermitcraftHighlight") {
-            highlight("hermitcraft");
-        }
-
         if (option != undefined) buildHTML();
+        if (option === "HermitcraftHighlight") highlight("hermitcraft");
 
         setHighlightObservers();
     }, 3000);
@@ -44,6 +41,10 @@ const buildHTML = () => {
 
     //building HTML for the subscription page
     let insertdiv = document.getElementById("guide-inner-content");
+
+    let breakLine = document.createElement("hr");
+    breakLine.setAttribute("id", "highlightBreakLine");
+    insertdiv.insertBefore(breakLine, insertdiv.firstChild);
 
     let wrapper = document.createElement("div");
     wrapper.setAttribute("id", "highlight");
@@ -115,6 +116,18 @@ const buildHTML = () => {
     resetButton.addEventListener("click", resetHighlight);
 
     if (option === "HermitcraftHighlight") hermitcraftButton.addEventListener("click", () => highlight("Hermitcraft"));
+    
+    
+    //keyword list
+    let keywordListWrapper = document.createElement("div");
+    keywordListWrapper.setAttribute("id", "keywordListWrapper");
+    wrapper.appendChild(keywordListWrapper);
+    
+    let keywordList = document.createElement("ul");
+    keywordList.setAttribute("id", "keywordList");
+    keywordListWrapper.appendChild(keywordList);
+    
+    keywordList.addEventListener("click", (event) => unHighlight(event.target));
 }
 
 //add multiple d strings by seperating them with semicolons
@@ -162,9 +175,50 @@ const highlight = (keyword) => {
         }
     }
 
-    if (!keywords.includes(keyword)) keywords.push(keyword);
+    if (!keywords.includes(keyword)) {
+        keywords.push(keyword);
+        addHighlightedWordToWrapper(keyword);
+    }
 }
 
+const addHighlightedWordToWrapper = (keywordText) => {
+    let keywordList = document.getElementById("keywordList");
+    let keyword = document.createElement("li");
+
+    keyword.setAttribute("class", "keyword");
+    keyword.innerHTML = keywordText
+    keywordList.appendChild(keyword);
+}
+
+const unHighlight = (target) => {
+    console.log(highlightedVideos)
+    keyword = target.innerHTML;
+    if (keywords.includes(keyword)) keywords = keywords.filter(string => string !== keyword);
+
+    //unhighlight videos
+    //TODO if a video has two matching keywords one is enough to reset its highlight. The video should stay highlighted unless it doesn't contain any keywords.
+    highlightedVideos.forEach(video => {
+        videoTitle = video.querySelector(`a[id^="video-title"]`).innerHTML;
+        videoTitleSplit = videoTitle.split(" ");
+        let titleContainsKeyword = false;
+        let i = 0;
+
+        while (!titleContainsKeyword && i < videoTitleSplit.length) {
+            if (videoTitleSplit[i].toLowerCase() === keyword) {
+                titleContainsKeyword = true;
+                video.style.backgroundColor = "";
+            }
+            i++
+        }
+    })
+
+    //TODO remove unhighlighted videos from the highlightedVideos array
+
+    //remove <li> from the HTML keyword wrapper
+    target.remove();
+
+    console.log(highlightedVideos)
+}
 
 const resetHighlight = () => {
     for (let i = 0; i < highlightedVideos.length; i++) {
@@ -172,6 +226,9 @@ const resetHighlight = () => {
     }
     highlightedVideos.length = 0;
     keywords.length = 0;
+
+    //remove all <li> from the HTML keyword wrapper
+    document.getElementById("keywordList").innerHTML = "";
 }
 
 window.addEventListener("load", highlightSetup);
