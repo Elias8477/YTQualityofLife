@@ -11,7 +11,7 @@ const highlightSetup = () => {
     });
 
     chrome.storage.sync.get(["HighlightToggle"], result => {
-        if (result.highlightToggle) {
+        if (result.HighlightToggle) {
             setOption("Highlight");
         }
     });
