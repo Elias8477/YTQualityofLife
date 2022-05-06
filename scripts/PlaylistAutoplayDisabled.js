@@ -39,8 +39,9 @@ const checkTimeLeft = () => {
     totalTime = convertToSeconds(document.getElementsByClassName("ytp-time-duration")[0].innerHTML);
     let timeLeftInSeconds = totalTime - currentTime;
 
-    // console.log(currentTime);
-    // console.log(timeLeftInSeconds);
+    // console.log("totalTime: " + totalTime);
+    // console.log("currentTime: " + currentTime);
+    // console.log("timeLeft: " + timeLeftInSeconds);
     currentTime++;
 
     if (timeLeftInSeconds <= 2) {
@@ -54,11 +55,13 @@ const convertToSeconds = (time) => {
     let splitTimeStatus = time.split(":").reverse();
 
     for (let i = 0; i < splitTimeStatus.length; i++) {
-        if (i == 0) {
-            totalSeconds += parseInt(splitTimeStatus[i].trim());
-        } else {
-            totalSeconds += parseInt(splitTimeStatus[i].trim()) * (60 * i);
-        }
+            if (i == 0) {
+                totalSeconds += parseInt(splitTimeStatus[i].trim());
+            } else if (i == 1) {
+                totalSeconds += parseInt(splitTimeStatus[i].trim()) * (60 * i);
+            } else {
+                totalSeconds += parseInt(splitTimeStatus[i].trim()) * (3600 * i);
+            }
     }
 
     return totalSeconds;

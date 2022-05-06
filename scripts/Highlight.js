@@ -191,6 +191,7 @@ const addHighlightedWordToWrapper = (keywordText) => {
 }
 
 const unHighlight = (target) => {
+    //TODO remove console log
     console.log(highlightedVideos)
     keyword = target.innerHTML;
     if (keywords.includes(keyword)) keywords = keywords.filter(string => string !== keyword);
@@ -217,6 +218,7 @@ const unHighlight = (target) => {
     //remove <li> from the HTML keyword wrapper
     target.remove();
 
+    //TODO remove console log
     console.log(highlightedVideos)
 }
 
