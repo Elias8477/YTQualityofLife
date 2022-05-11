@@ -151,20 +151,21 @@ const createIcon = (color, dStrings) => {
 
 const highlight = (keyword) => {
     let videos = document.getElementsByTagName("ytd-grid-video-renderer");
+    let keywordLowered = keyword.toLowerCase();
 
     let currentVideo = "";
     let videoTitle = "";
-    let videoTitleSplit = "";
+    let videoTitleWordsArray = "";
 
     for (let i = 0; i < videos.length; i++) {
         currentVideo = videos[i]
         videoTitle = currentVideo.querySelector(`a[id^="video-title"]`).innerHTML;
-        videoTitleSplit = videoTitle.split(" ");
+        videoTitleWordsArray = videoTitle.split(" ").map(word => word.toLowerCase());
         let titleContainsKeyword = false;
         let j = 0;
 
-        while (!titleContainsKeyword && j < videoTitleSplit.length) {
-            if (videoTitleSplit[j].toLowerCase() === keyword) {
+        while (!titleContainsKeyword && j < videoTitleWordsArray.length) {
+            if (videoTitleWordsArray[j] === keywordLowered) {
                 if (highlightedVideos.includes(currentVideo)) break;
                 titleContainsKeyword = true;
 
@@ -175,9 +176,9 @@ const highlight = (keyword) => {
         }
     }
 
-    if (!keywords.includes(keyword)) {
-        keywords.push(keyword);
-        addHighlightedWordToWrapper(keyword);
+    if (!keywords.includes(keywordLowered)) {
+        keywords.push(keywordLowered);
+        addHighlightedWordToWrapper(keywordLowered);
     }
 }
 
