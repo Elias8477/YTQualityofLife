@@ -1,4 +1,5 @@
 let highlightedVideos = new Map();
+let keywords = [];
 let option;
 let sectionRenderListLength = 1;
 
@@ -37,15 +38,6 @@ const setHighlightObservers = () => {
             sectionRenderListLength = sectionRendererList.children.length
 
             //get all keywords and re-highlight
-            let keywords = new Set();
-            let keywordsWithDuplicates = Array.from(highlightedVideos.values());
-            keywordsWithDuplicates.forEach(keywordsList => {
-                keywordsList.forEach(keyword => {
-                    keywords.add(keyword);
-                })
-            })
-
-
             keywords.forEach(keyword => highlight(keyword));
         }
     }).observe(sectionRendererList, { childList: true });
@@ -118,21 +110,21 @@ const buildHTML = () => {
     inputField.addEventListener("keyup", event => {
         event.preventDefault();
         if (event.key === "Enter") {
-            let keywords = inputField.value.toLowerCase().split(" ").filter(Boolean);
-            keywords.forEach(keyword => highlight(keyword));
+            let keywordsInput = inputField.value.toLowerCase().split(" ").filter(Boolean);
+            keywordsInput.forEach(keyword => highlight(keyword));
             inputField.value = ""
         }
     });
 
     searchButton.addEventListener("click", () => {
-        let keywords = inputField.value.toLowerCase().split(" ").filter(Boolean);
-        keywords.forEach(keyword => highlight(keyword));
+        let keywordsInput = inputField.value.toLowerCase().split(" ").filter(Boolean);
+        keywordsInput.forEach(keyword => highlight(keyword));
         inputField.value = ""
     });
 
     resetButton.addEventListener("click", resetHighlight);
 
-    if (option === "HermitcraftHighlight") hermitcraftButton.addEventListener("click", () => highlight("Hermitcraft"));
+    if (option === "HermitcraftHighlight") hermitcraftButton.addEventListener("click", () => highlight("hermitcraft"));
 
 
     //keyword list
@@ -199,8 +191,10 @@ const highlight = (keyword) => {
     }
 
     addHighlightedWordToWrapper(keyword);
-    //TODO remove console log
+    updateKeywordCount();
+    //TODO remove console logs
     console.log(highlightedVideos)
+    console.log(keywords)
 }
 
 const addHighlightedWordToWrapper = (currentKeyword) => {
@@ -216,13 +210,15 @@ const addHighlightedWordToWrapper = (currentKeyword) => {
 
     let keywordElement = document.createElement("li");
     keywordElement.setAttribute("class", "keyword");
+    keywordElement.setAttribute("data-count", "0");
     keywordElement.innerHTML = currentKeyword
     keywordListWrapper.appendChild(keywordElement);
+    keywords.push(currentKeyword);
 }
 
 const unhighlight = (target) => {
     //TODO remove console log
-    console.log(highlightedVideos)
+    // console.log(highlightedVideos)
     keyword = target.innerHTML;
 
     //search videos where title matches current keyword and does not match any other keywords
@@ -241,15 +237,48 @@ const unhighlight = (target) => {
         }
     })
 
-
     //remove <li> from the HTML keyword wrapper
     target.remove();
+    keywords = keywords.filter(k => k !== keyword)
+    updateKeywordCount();
 }
 
 const resetHighlight = () => {
     Array.from(highlightedVideos.keys()).forEach(video => video.style.backgroundColor = "");
     highlightedVideos.clear();
+    keywords.length = 0;
     document.getElementById("keywordList").innerHTML = "";
+}
+
+const updateKeywordCount = () => {
+    let count = getKeywordCount();
+    let keywordList = document.querySelectorAll(".keyword");
+
+    keywordList.forEach(keywordElement => {
+        let keyword = keywordElement.innerHTML;
+        let keywordCount = count.get(keyword);
+
+        if (keywordCount == null) keywordCount = 0;
+
+        keywordElement.setAttribute("data-count", keywordCount);
+    })
+}
+
+const getKeywordCount = () => {
+    let count = new Map();
+    let ArrayWithKeywordsArrays = Array.from(highlightedVideos.values());
+    ArrayWithKeywordsArrays.forEach(keywordsArray => {
+        keywordsArray.forEach(keyword => {
+
+            if (count.has(keyword)) {
+                count.set(keyword, (count.get(keyword)) + 1)
+            } else {
+                count.set(keyword, 1);
+            }
+        });
+    });
+
+    return count;
 }
 
 window.addEventListener("load", highlightSetup);
