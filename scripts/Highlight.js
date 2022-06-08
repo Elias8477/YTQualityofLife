@@ -1,5 +1,6 @@
 let highlightedVideos = new Map();
 let option;
+let sectionRenderListLength = 1;
 
 const highlightSetup = () => {
     //checking which option has been selected
@@ -31,7 +32,22 @@ const setHighlightObservers = () => {
     //when new content is loaded by scrolling down, observer triggers and highlights newly loaded videos
     let sectionRendererList = document.getElementById("contents");
     new MutationObserver(() => {
-        Array.from(highlightedVideos.keys()).forEach(keyword => highlight(keyword));
+        //prevent multiple triggers by checking if the list actually grew
+        if (sectionRenderListLength < sectionRendererList.children.length) {
+            sectionRenderListLength = sectionRendererList.children.length
+
+            //get all keywords and re-highlight
+            let keywords = new Set();
+            let keywordsWithDuplicates = Array.from(highlightedVideos.values());
+            keywordsWithDuplicates.forEach(keywordsList => {
+                keywordsList.forEach(keyword => {
+                    keywords.add(keyword);
+                })
+            })
+
+
+            keywords.forEach(keyword => highlight(keyword));
+        }
     }).observe(sectionRendererList, { childList: true });
 }
 
@@ -168,9 +184,10 @@ const highlight = (keyword) => {
                 currentVideo.style.backgroundColor = "red";
 
                 let list = highlightedVideos.get(currentVideo);
-                if(list == null) {
+                if (list == null) {
                     list = [keyword];
-                } else {
+                } else if (list.includes(keyword)) { }
+                else {
                     list.push(keyword);
                 }
                 highlightedVideos.set(currentVideo, list);
@@ -209,14 +226,14 @@ const unhighlight = (target) => {
     //search videos where title matches current keyword and does not match any other keywords
     highlightedVideos.forEach((keywords, video) => {
         //delete keyword
-        for( var j = 0; j < keywords.length; j++){ 
-            if ( keywords[j] === keyword) { 
-                keywords.splice(j, 1); 
+        for (var j = 0; j < keywords.length; j++) {
+            if (keywords[j] === keyword) {
+                keywords.splice(j, 1);
             }
         }
 
         //check if array is empty and unhighlight
-        if(keywords.length === 0) {
+        if (keywords.length === 0) {
             video.style.backgroundColor = "";
             highlightedVideos.delete(video);
         }
