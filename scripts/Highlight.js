@@ -1,5 +1,4 @@
-let highlightedVideos = [];
-let keywords = [];
+let highlightedVideos = new Map();
 let option;
 
 const highlightSetup = () => {
@@ -32,7 +31,7 @@ const setHighlightObservers = () => {
     //when new content is loaded by scrolling down, observer triggers and highlights newly loaded videos
     let sectionRendererList = document.getElementById("contents");
     new MutationObserver(() => {
-        keywords.forEach(keyword => highlight(keyword));
+        Array.from(highlightedVideos.keys()).forEach(keyword => highlight(keyword));
     }).observe(sectionRendererList, { childList: true });
 }
 
@@ -116,18 +115,18 @@ const buildHTML = () => {
     resetButton.addEventListener("click", resetHighlight);
 
     if (option === "HermitcraftHighlight") hermitcraftButton.addEventListener("click", () => highlight("Hermitcraft"));
-    
-    
+
+
     //keyword list
     let keywordListWrapper = document.createElement("div");
     keywordListWrapper.setAttribute("id", "keywordListWrapper");
     wrapper.appendChild(keywordListWrapper);
-    
+
     let keywordList = document.createElement("ul");
     keywordList.setAttribute("id", "keywordList");
     keywordListWrapper.appendChild(keywordList);
-    
-    keywordList.addEventListener("click", (event) => unHighlight(event.target));
+
+    keywordList.addEventListener("click", (event) => unhighlight(event.target));
 }
 
 //add multiple d strings by seperating them with semicolons
@@ -151,7 +150,6 @@ const createIcon = (color, dStrings) => {
 
 const highlight = (keyword) => {
     let videos = document.getElementsByTagName("ytd-grid-video-renderer");
-    let keywordLowered = keyword.toLowerCase();
 
     let currentVideo = "";
     let videoTitle = "";
@@ -165,72 +163,73 @@ const highlight = (keyword) => {
         let j = 0;
 
         while (!titleContainsKeyword && j < videoTitleWordsArray.length) {
-            if (videoTitleWordsArray[j] === keywordLowered) {
-                if (highlightedVideos.includes(currentVideo)) break;
+            if (videoTitleWordsArray[j] === keyword) {
                 titleContainsKeyword = true;
-
                 currentVideo.style.backgroundColor = "red";
-                highlightedVideos.push(currentVideo);
+
+                let list = highlightedVideos.get(currentVideo);
+                if(list == null) {
+                    list = [keyword];
+                } else {
+                    list.push(keyword);
+                }
+                highlightedVideos.set(currentVideo, list);
             }
             j++
         }
     }
 
-    if (!keywords.includes(keywordLowered)) {
-        keywords.push(keywordLowered);
-        addHighlightedWordToWrapper(keywordLowered);
-    }
+    addHighlightedWordToWrapper(keyword);
+    //TODO remove console log
+    console.log(highlightedVideos)
 }
 
-const addHighlightedWordToWrapper = (keywordText) => {
-    let keywordList = document.getElementById("keywordList");
-    let keyword = document.createElement("li");
+const addHighlightedWordToWrapper = (currentKeyword) => {
+    let keywordListWrapper = document.getElementById("keywordList");
+    let keywordList = document.querySelectorAll(".keyword");
+    let exists = false
 
-    keyword.setAttribute("class", "keyword");
-    keyword.innerHTML = keywordText
-    keywordList.appendChild(keyword);
+    keywordList.forEach(keyword => {
+        if (keyword.innerHTML === currentKeyword) exists = true;
+    })
+
+    if (exists) return
+
+    let keywordElement = document.createElement("li");
+    keywordElement.setAttribute("class", "keyword");
+    keywordElement.innerHTML = currentKeyword
+    keywordListWrapper.appendChild(keywordElement);
 }
 
-const unHighlight = (target) => {
+const unhighlight = (target) => {
     //TODO remove console log
     console.log(highlightedVideos)
     keyword = target.innerHTML;
-    if (keywords.includes(keyword)) keywords = keywords.filter(string => string !== keyword);
 
-    //unhighlight videos
-    //TODO if a video has two matching keywords one is enough to reset its highlight. The video should stay highlighted unless it doesn't contain any keywords.
-    highlightedVideos.forEach(video => {
-        videoTitle = video.querySelector(`a[id^="video-title"]`).innerHTML;
-        videoTitleSplit = videoTitle.split(" ");
-        let titleContainsKeyword = false;
-        let i = 0;
-
-        while (!titleContainsKeyword && i < videoTitleSplit.length) {
-            if (videoTitleSplit[i].toLowerCase() === keyword) {
-                titleContainsKeyword = true;
-                video.style.backgroundColor = "";
+    //search videos where title matches current keyword and does not match any other keywords
+    highlightedVideos.forEach((keywords, video) => {
+        //delete keyword
+        for( var j = 0; j < keywords.length; j++){ 
+            if ( keywords[j] === keyword) { 
+                keywords.splice(j, 1); 
             }
-            i++
+        }
+
+        //check if array is empty and unhighlight
+        if(keywords.length === 0) {
+            video.style.backgroundColor = "";
+            highlightedVideos.delete(video);
         }
     })
 
-    //TODO remove unhighlighted videos from the highlightedVideos array
 
     //remove <li> from the HTML keyword wrapper
     target.remove();
-
-    //TODO remove console log
-    console.log(highlightedVideos)
 }
 
 const resetHighlight = () => {
-    for (let i = 0; i < highlightedVideos.length; i++) {
-        highlightedVideos[i].style.backgroundColor = "";
-    }
-    highlightedVideos.length = 0;
-    keywords.length = 0;
-
-    //remove all <li> from the HTML keyword wrapper
+    Array.from(highlightedVideos.keys()).forEach(video => video.style.backgroundColor = "");
+    highlightedVideos.clear();
     document.getElementById("keywordList").innerHTML = "";
 }
 
