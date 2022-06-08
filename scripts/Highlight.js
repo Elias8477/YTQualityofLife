@@ -118,13 +118,15 @@ const buildHTML = () => {
     inputField.addEventListener("keyup", event => {
         event.preventDefault();
         if (event.key === "Enter") {
-            highlight(inputField.value.toLowerCase());
+            let keywords = inputField.value.toLowerCase().split(" ").filter(Boolean);
+            keywords.forEach(keyword => highlight(keyword));
             inputField.value = ""
         }
     });
 
     searchButton.addEventListener("click", () => {
-        highlight(inputField.value.toLowerCase());
+        let keywords = inputField.value.toLowerCase().split(" ").filter(Boolean);
+        keywords.forEach(keyword => highlight(keyword));
         inputField.value = ""
     });
 
