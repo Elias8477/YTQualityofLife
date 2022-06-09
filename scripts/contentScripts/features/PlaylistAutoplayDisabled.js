@@ -5,14 +5,9 @@ let totalTime = 0;
 let interval = false;
 
 const PlaylistAutoplayDisabledSetup = () => {
-    chrome.storage.sync.get(["PlaylistAutoplayDisabledToggle"], result => {
-        if (result.PlaylistAutoplayDisabledToggle) {
-            console.log("PlaylistAutoplayDisabled Enabled");
-
-            setPlaylistAutoplayDisabledObservers();
-            checkVideoStatus();
-        }
-    });
+    console.log("PlaylistAutoplayDisabled Enabled");
+    setPlaylistAutoplayDisabledObservers();
+    checkVideoStatus();
 }
 
 const setPlaylistAutoplayDisabledObservers = () => {

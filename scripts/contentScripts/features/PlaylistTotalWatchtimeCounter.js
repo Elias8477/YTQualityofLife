@@ -1,16 +1,12 @@
 
 const PlaylistTotalWatchtimeCounterSetup = () => {
-    chrome.storage.sync.get(["PlaylistTotalWatchtimeCounterToggle"], result => {
-        if (result.PlaylistTotalWatchtimeCounterToggle) {
-            console.log("PlaylistTotalWatchtimeCounter Enabled");
+    console.log("PlaylistTotalWatchtimeCounter Enabled");
 
-            setTimeout(() => {
-                let totalSeconds = format(getTotalTimeStatusInSeconds() /* / getPlaybackSpeed() */);
-                addToPage(totalSeconds);
-                setPlaylistTotalWatchtimeCounterObservers();
-            }, 5000);
-        }
-    });
+    setTimeout(() => {
+        let totalSeconds = format(getTotalTimeStatusInSeconds() /* / getPlaybackSpeed() */);
+        addToPage(totalSeconds);
+        setPlaylistTotalWatchtimeCounterObservers();
+    }, 5000);
 }
 
 const setPlaylistTotalWatchtimeCounterObservers = () => {
@@ -33,7 +29,7 @@ const setPlaylistTotalWatchtimeCounterObservers = () => {
                 addToPage(totalSeconds);
             }
         }, 5000);
-        //TODO check if observing on document is resource intensive
+        //TODO when refactoring to injection.js remove this observer because url change is observed there
     }).observe(document, { subtree: true, childList: true });
 }
 
@@ -43,7 +39,6 @@ const getTotalTimeStatusInSeconds = () => {
 
     for (let i = 0; i < videos.length; i++) {
         let currentVideoTimeStatus = videos[i].querySelector(`span[id^="text"]`);
-        // console.log(currentVideoTimeStatus);
 
         if (currentVideoTimeStatus == null) {
             console.log("Error loading Time status. Either the playlist is too large or your internet connection too slow.");

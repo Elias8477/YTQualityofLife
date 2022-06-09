@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Youtube QOLT",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Youtube Quality of Life Tweaks",
   "permissions": [
     "activeTab",
@@ -9,13 +9,9 @@
   ],
   "content_scripts": [
     {
-      "matches": ["https://www.youtube.com/feed/subscriptions"],
-      "js": ["scripts/Highlight.js"],
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["scripts/contentScripts/main.js", "scripts/contentScripts/features/Highlight.js"],
       "css": ["styles/Highlight.css"]
-    },
-    {
-      "matches": ["https://www.youtube.com/watch?*&list=*"],
-      "js": ["scripts/PlaylistRemovePopup.js", "scripts/PlaylistTotalWatchtimeCounter.js", "scripts/PlaylistAutoplayDisabled.js"]
     }
   ],
   "icons": {

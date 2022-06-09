@@ -3,30 +3,16 @@ let keywords = [];
 let option;
 let sectionRenderListLength = 1;
 
-const highlightSetup = () => {
-    //checking which option has been selected
-    chrome.storage.sync.get(["HermitcraftHighlightToggle"], result => {
-        if (result.HermitcraftHighlightToggle) {
-            setOption("HermitcraftHighlight");
-        }
-    });
-
-    chrome.storage.sync.get(["HighlightToggle"], result => {
-        if (result.HighlightToggle) {
-            setOption("Highlight");
-        }
-    });
+const highlightSetup = (HCHoption) => {
+    if(document.getElementById("highlight") != null) return;
+    option = HCHoption;
 
     setTimeout(() => {
-        if (option != undefined) buildHTML();
+        buildHTML();
         if (option === "HermitcraftHighlight") highlight("hermitcraft");
 
         setHighlightObservers();
     }, 3000);
-}
-
-const setOption = (o) => {
-    option = o;
 }
 
 const setHighlightObservers = () => {
@@ -192,9 +178,6 @@ const highlight = (keyword) => {
 
     addHighlightedWordToWrapper(keyword);
     updateKeywordCount();
-    //TODO remove console logs
-    console.log(highlightedVideos)
-    console.log(keywords)
 }
 
 const addHighlightedWordToWrapper = (currentKeyword) => {
@@ -217,8 +200,6 @@ const addHighlightedWordToWrapper = (currentKeyword) => {
 }
 
 const unhighlight = (target) => {
-    //TODO remove console log
-    // console.log(highlightedVideos)
     keyword = target.innerHTML;
 
     //search videos where title matches current keyword and does not match any other keywords
@@ -280,5 +261,3 @@ const getKeywordCount = () => {
 
     return count;
 }
-
-window.addEventListener("load", highlightSetup);
