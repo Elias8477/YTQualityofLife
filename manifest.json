@@ -13,7 +13,8 @@
       "js": [
         "scripts/contentScripts/main.js", 
         "scripts/contentScripts/features/Highlight.js",
-        "scripts/contentScripts/features/PlaylistAutoplayDisabled.js"
+        "scripts/contentScripts/features/PlaylistAutoplayDisabled.js",
+        "scripts/contentScripts/features/PlaylistTotalWatchtimeCounter.js"
       ],
       "css": ["styles/Highlight.css"]
     }

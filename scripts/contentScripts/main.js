@@ -22,6 +22,7 @@ const setUrlChangeListener = () => {
     setInterval(() => {
         if (location.href != oldTabUrl) {
             oldTabUrl = location.href;
+            //TODO remove console log
             console.log("url changed!")
             injectFeatures();
         }
@@ -73,7 +74,11 @@ const injectFeatures = () => {
         PlaylistAutoplayDisabledSetup();
     }
 
-    //TODO implement other features
+    //TODO implement PlaylistRemovePopup
+
+    if(features.PlaylistTotalWatchtimeCounter && /&list=/.test(oldTabUrl)){
+        PlaylistTotalWatchtimeCounterSetup();
+    }
 }
 
 window.addEventListener("load", main);

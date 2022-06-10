@@ -1,35 +1,14 @@
+//TODO put the watchtime inside a <span> instead of directly inside the playlist title
+//TODO bugfix in some cases totalwatchtime is inserted multiple times
+//TODO bugfix on deleting or moving a video in a playlist the time disappears
+//TODO divide total time by the current set playbackspeed
 const PlaylistTotalWatchtimeCounterSetup = () => {
+    setTimeout(() => {
     console.log("PlaylistTotalWatchtimeCounter Enabled");
 
-    setTimeout(() => {
         let totalSeconds = format(getTotalTimeStatusInSeconds() /* / getPlaybackSpeed() */);
         addToPage(totalSeconds);
-        setPlaylistTotalWatchtimeCounterObservers();
     }, 5000);
-}
-
-const setPlaylistTotalWatchtimeCounterObservers = () => {
-    //observing when video gets added or removed from playlist
-    const videoWrapper = document.getElementsByTagName("ytd-playlist-panel-video-renderer")[0].parentElement;
-    new MutationObserver(() => {
-        totalSeconds = format(getTotalTimeStatusInSeconds() /* / getPlaybackSpeed() */);
-        addToPage(totalSeconds);
-    }).observe(videoWrapper, { childList: true });
-
-    //observing when URL changes, page partially refreshes
-    let lastUrl = location.href;
-    new MutationObserver(() => {
-        setTimeout(() => {
-            const url = location.href;
-            if (url !== lastUrl) {
-                lastUrl = url;
-
-                totalSeconds = format(getTotalTimeStatusInSeconds() /* / getPlaybackSpeed() */);
-                addToPage(totalSeconds);
-            }
-        }, 5000);
-        //TODO when refactoring to injection.js remove this observer because url change is observed there
-    }).observe(document, { subtree: true, childList: true });
 }
 
 const getTotalTimeStatusInSeconds = () => {
