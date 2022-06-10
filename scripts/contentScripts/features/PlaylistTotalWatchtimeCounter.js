@@ -1,7 +1,4 @@
 //TODO put the watchtime inside a <span> instead of directly inside the playlist title
-//TODO bugfix in some cases totalwatchtime is inserted multiple times
-//TODO bugfix on deleting or moving a video in a playlist the time disappears
-//TODO divide total time by the current set playbackspeed
 const PlaylistTotalWatchtimeCounterSetup = () => {
     setTimeout(() => {
     console.log("PlaylistTotalWatchtimeCounter Enabled");

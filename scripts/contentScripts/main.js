@@ -62,21 +62,23 @@ const getAllActiveFeatures = () => {
 }
 
 const injectFeatures = () => {
-    if(features.Highlight && oldTabUrl === "https://www.youtube.com/feed/subscriptions") {
+    if (features.Highlight && oldTabUrl === "https://www.youtube.com/feed/subscriptions") {
         highlightSetup("Highlight");
     }
 
-    if(features.HermitcraftHighlight && oldTabUrl === "https://www.youtube.com/feed/subscriptions") {
+    if (features.HermitcraftHighlight && oldTabUrl === "https://www.youtube.com/feed/subscriptions") {
         highlightSetup("HermitcraftHighlight");
     }
 
-    if(features.PlaylistAutoplayDisabled && /watch\?v=/.test(oldTabUrl)){
+    if (features.PlaylistAutoplayDisabled && /watch\?v=/.test(oldTabUrl)) {
         PlaylistAutoplayDisabledSetup();
     }
 
-    //TODO implement PlaylistRemovePopup
+    if (features.PlaylistRemovePopup && /&list=/.test(oldTabUrl)) {
+        PlaylistRemovePopupSetup();
+    }
 
-    if(features.PlaylistTotalWatchtimeCounter && /&list=/.test(oldTabUrl)){
+    if (features.PlaylistTotalWatchtimeCounter && /&list=/.test(oldTabUrl)) {
         PlaylistTotalWatchtimeCounterSetup();
     }
 }

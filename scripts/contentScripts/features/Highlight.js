@@ -8,10 +8,11 @@ const highlightSetup = (HCHoption) => {
     option = HCHoption;
 
     setTimeout(() => {
+        console.log("Highlight Enabled");
+        
         buildHTML();
-        if (option === "HermitcraftHighlight") highlight("hermitcraft");
-
         setHighlightObservers();
+        if (option === "HermitcraftHighlight") highlight("hermitcraft");
     }, 3000);
 }
 
@@ -30,7 +31,6 @@ const setHighlightObservers = () => {
 }
 
 const buildHTML = () => {
-    console.log("Highlight Enabled");
 
     //building HTML for the subscription page
     let insertdiv = document.getElementById("guide-inner-content");

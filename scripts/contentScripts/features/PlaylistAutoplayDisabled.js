@@ -1,9 +1,9 @@
 let videoElement;
-let alreadyInitialized = false;
+let playlistAutoplayDisabledInitialized = false;
 
 const PlaylistAutoplayDisabledSetup = () => {
-    if (alreadyInitialized) return;
-    alreadyInitialized = true;
+    if (playlistAutoplayDisabledInitialized) return;
+    playlistAutoplayDisabledInitialized = true;
 
     console.log("PlaylistAutoplayDisabled Enabled");
     videoElement = document.getElementsByTagName("video")[0];

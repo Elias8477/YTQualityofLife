@@ -1,7 +1,7 @@
 const PlaylistRemovePopupSetup = () => {
-    console.log("PlaylistRemovePopup Enabled");
-
     setTimeout(() => {
+        console.log("PlaylistRemovePopup Enabled");
+
         let videos = document.querySelectorAll("#playlist-items");
         changeDotsToTrashcan(videos);
 
