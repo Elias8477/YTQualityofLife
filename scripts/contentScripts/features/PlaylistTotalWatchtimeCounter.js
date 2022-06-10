@@ -16,9 +16,7 @@ const setPlaylistTotalWatchtimeCounterObserver = () => {
 
     //detect when new videos are addded or removed from the playlist to update the totalWatchtime
     let videoWrapperElement = document.getElementsByTagName("ytd-playlist-panel-video-renderer")[0].parentElement;
-    new MutationObserver((mutations) => {
-        console.log("videolist updated")
-        console.log(mutations)
+    new MutationObserver(() => {
         updateSpan();
     }).observe(videoWrapperElement, { childList: true });
 }
@@ -54,7 +52,7 @@ const getTotalTimeStatusInSeconds = () => {
 }
 
 const getPlaybackSpeed = () => {
-    // return document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate;
+    // return document.getElementsByTagName("video")[0].playbackRate;
 }
 
 const format = (input) => {
