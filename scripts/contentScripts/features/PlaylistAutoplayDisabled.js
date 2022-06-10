@@ -1,11 +1,14 @@
-const currentTimeElement = document.getElementsByClassName("ytp-time-current")[0];
-const videoElement = document.getElementsByTagName("video")[0];
-let currentTime = 0;
+let currentTimeElement;
+let videoElement;
+let currentTime = 5;
 let totalTime = 0;
-let interval = false;
+let timerActive = false;
 
 const PlaylistAutoplayDisabledSetup = () => {
     console.log("PlaylistAutoplayDisabled Enabled");
+    currentTimeElement = document.getElementsByClassName("ytp-time-current")[0];
+    videoElement = document.getElementsByTagName("video")[0];
+    totalTime = convertToSeconds(document.getElementsByClassName("ytp-time-duration")[0].innerHTML);
     setPlaylistAutoplayDisabledObservers();
     checkVideoStatus();
 }
@@ -18,30 +21,38 @@ const setPlaylistAutoplayDisabledObservers = () => {
 }
 
 const checkVideoStatus = () => {
-    if (!interval) interval = setInterval(checkTimeLeft, 1000);
+    checkTimeLeft();
+    timerActive = true;
 
-    videoElement.addEventListener("play", () => {
-        if (!interval) interval = setInterval(checkTimeLeft, 1000);
+    videoElement.addEventListener("play", (event) => {
+        console.log(event)
+        if (timerActive == false) {
+            timerActive = true;
+            checkTimeLeft();
+        }
     });
 
     videoElement.addEventListener("pause", () => {
-        clearInterval(interval);
-        interval = false;
+        timerActive = false;
     });
 }
 
 const checkTimeLeft = () => {
-    totalTime = convertToSeconds(document.getElementsByClassName("ytp-time-duration")[0].innerHTML);
-    let timeLeftInSeconds = totalTime - currentTime;
+    setTimeout(() => {
+        let timeLeftInSeconds = totalTime - currentTime;
 
-    // console.log("totalTime: " + totalTime);
-    // console.log("currentTime: " + currentTime);
-    // console.log("timeLeft: " + timeLeftInSeconds);
-    currentTime++;
+        // console.log("totalTime: " + totalTime);
+        // console.log("currentTime: " + currentTime);
+        console.log("timeLeft: " + timeLeftInSeconds);
+        currentTime++;
 
-    if (timeLeftInSeconds <= 2) {
-        videoElement.pause();
-    }
+        // if (timeLeftInSeconds <= 2) {
+        //     videoElement.pause();
+        //     timerActive = false;
+        // }
+
+        if (timerActive) checkTimeLeft();
+    }, 1000);
 }
 
 const convertToSeconds = (time) => {
@@ -50,16 +61,14 @@ const convertToSeconds = (time) => {
     let splitTimeStatus = time.split(":").reverse();
 
     for (let i = 0; i < splitTimeStatus.length; i++) {
-            if (i == 0) {
-                totalSeconds += parseInt(splitTimeStatus[i].trim());
-            } else if (i == 1) {
-                totalSeconds += parseInt(splitTimeStatus[i].trim()) * (60 * i);
-            } else {
-                totalSeconds += parseInt(splitTimeStatus[i].trim()) * (3600 * i);
-            }
+        if (i == 0) {
+            totalSeconds += parseInt(splitTimeStatus[i].trim());
+        } else if (i == 1) {
+            totalSeconds += parseInt(splitTimeStatus[i].trim()) * (60 * i);
+        } else {
+            totalSeconds += parseInt(splitTimeStatus[i].trim()) * (3600 * i);
+        }
     }
 
     return totalSeconds;
 }
-
-window.addEventListener("load", PlaylistAutoplayDisabledSetup);

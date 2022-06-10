@@ -36,5 +36,3 @@ const deleteVideo = (event) => {
         }
     }
 }
-
-window.addEventListener("load", PlaylistRemovePopupSetup);

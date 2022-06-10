@@ -1,4 +1,3 @@
-
 const PlaylistTotalWatchtimeCounterSetup = () => {
     console.log("PlaylistTotalWatchtimeCounter Enabled");
 
@@ -87,5 +86,3 @@ const addToPage = (totalTime) => {
 
     playlistPanelTitle.innerHTML = `${playlistPanelTitle.innerHTML} (${totalTime})`;
 }
-
-window.addEventListener("load", PlaylistTotalWatchtimeCounterSetup);

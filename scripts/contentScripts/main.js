@@ -9,9 +9,10 @@ let features = {
 
 const main = () => {
     console.log("YTQoL loading");
-    setUrlChangeListener();
     getAllActiveFeatures();
+
     setTimeout(() => {
+        setUrlChangeListener();
         injectFeatures();
     }, 2000);
 }
@@ -60,14 +61,16 @@ const getAllActiveFeatures = () => {
 }
 
 const injectFeatures = () => {
-    console.log(features)
-    console.log(oldTabUrl) 
     if(features.Highlight && oldTabUrl === "https://www.youtube.com/feed/subscriptions") {
         highlightSetup("Highlight");
     }
 
     if(features.HermitcraftHighlight && oldTabUrl === "https://www.youtube.com/feed/subscriptions") {
         highlightSetup("HermitcraftHighlight");
+    }
+
+    if(features.PlaylistAutoplayDisabled && /watch\?v=/.test(oldTabUrl)){
+        PlaylistAutoplayDisabledSetup();
     }
 
     //TODO implement other features
