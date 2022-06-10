@@ -1,7 +1,6 @@
-//TODO put the watchtime inside a <span> instead of directly inside the playlist title
 const PlaylistTotalWatchtimeCounterSetup = () => {
     setTimeout(() => {
-    console.log("PlaylistTotalWatchtimeCounter Enabled");
+    console.log("PlaylistTotalWatchtimeCounter Updated");
 
         let totalSeconds = format(getTotalTimeStatusInSeconds() /* / getPlaybackSpeed() */);
         addToPage(totalSeconds);
@@ -60,5 +59,12 @@ const format = (input) => {
 const addToPage = (totalTime) => {
     let playlistPanelTitle = document.getElementsByClassName("title style-scope ytd-playlist-panel-renderer complex-string")[0].children[0];
 
-    playlistPanelTitle.innerHTML = `${playlistPanelTitle.innerHTML} (${totalTime})`;
+    //check if title already contains a watchtime span and filter it out.
+    let playlistPanelTitleText = playlistPanelTitle.innerHTML;
+    let spanStartIndex = playlistPanelTitleText.indexOf("<");
+    if (spanStartIndex != -1) {
+        playlistPanelTitleText = playlistPanelTitleText.substring(0, spanStartIndex).trim()
+    }
+
+    playlistPanelTitle.innerHTML = `${playlistPanelTitleText} <span id="totalPlaylistWatchtime">(${totalTime})</span>`;
 }
