@@ -1,10 +1,31 @@
+let playlistTotalWatchtimeCounterInitialized = false;
+
 const PlaylistTotalWatchtimeCounterSetup = () => {
     setTimeout(() => {
-    console.log("PlaylistTotalWatchtimeCounter Updated");
+        console.log("PlaylistTotalWatchtimeCounter Updated");
 
-        let totalSeconds = format(getTotalTimeStatusInSeconds() /* / getPlaybackSpeed() */);
-        addToPage(totalSeconds);
+        setPlaylistTotalWatchtimeCounterObserver();
+        updateSpan();
+
+        playlistTotalWatchtimeCounterInitialized = true;
     }, 5000);
+}
+
+const setPlaylistTotalWatchtimeCounterObserver = () => {
+    if (playlistTotalWatchtimeCounterInitialized) return;
+
+    //detect when new videos are addded or removed from the playlist to update the totalWatchtime
+    let videoWrapperElement = document.getElementsByTagName("ytd-playlist-panel-video-renderer")[0].parentElement;
+    new MutationObserver((mutations) => {
+        console.log("videolist updated")
+        console.log(mutations)
+        updateSpan();
+    }).observe(videoWrapperElement, { childList: true });
+}
+
+const updateSpan = () => {
+    let totalSeconds = format(getTotalTimeStatusInSeconds() /* / getPlaybackSpeed() */);
+    addToPage(totalSeconds);
 }
 
 const getTotalTimeStatusInSeconds = () => {
@@ -57,14 +78,14 @@ const format = (input) => {
 }
 
 const addToPage = (totalTime) => {
-    let playlistPanelTitle = document.getElementsByClassName("title style-scope ytd-playlist-panel-renderer complex-string")[0].children[0];
+    let playlistTitle = document.getElementsByClassName("title style-scope ytd-playlist-panel-renderer complex-string")[0].children[0];
 
     //check if title already contains a watchtime span and filter it out.
-    let playlistPanelTitleText = playlistPanelTitle.innerHTML;
-    let spanStartIndex = playlistPanelTitleText.indexOf("<");
+    let playlistTitleText = playlistTitle.innerHTML;
+    let spanStartIndex = playlistTitleText.indexOf("<");
     if (spanStartIndex != -1) {
-        playlistPanelTitleText = playlistPanelTitleText.substring(0, spanStartIndex).trim()
+        playlistTitleText = playlistTitleText.substring(0, spanStartIndex).trim()
     }
 
-    playlistPanelTitle.innerHTML = `${playlistPanelTitleText} <span id="totalPlaylistWatchtime">(${totalTime})</span>`;
+    playlistTitle.innerHTML = `${playlistTitleText} <span id="totalPlaylistWatchtime">(${totalTime})</span>`;
 }
