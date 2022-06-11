@@ -1,9 +1,11 @@
 let playlistTotalWatchtimeCounterInitialized = false;
+let playlistMenuNode;
 
 const PlaylistTotalWatchtimeCounterSetup = () => {
     setTimeout(() => {
         console.log("PlaylistTotalWatchtimeCounter Updated");
 
+        playlistMenuNode = document.querySelectorAll("#container.ytd-playlist-panel-renderer")[1];
         setPlaylistTotalWatchtimeCounterObserver();
         updateSpan();
 
@@ -15,7 +17,7 @@ const setPlaylistTotalWatchtimeCounterObserver = () => {
     if (playlistTotalWatchtimeCounterInitialized) return;
 
     //detect when new videos are addded or removed from the playlist to update the totalWatchtime
-    let videoWrapperElement = document.getElementsByTagName("ytd-playlist-panel-video-renderer")[0].parentElement;
+    let videoWrapperElement = playlistMenuNode.querySelector("#items");
     new MutationObserver(() => {
         updateSpan();
     }).observe(videoWrapperElement, { childList: true });
@@ -27,7 +29,7 @@ const updateSpan = () => {
 }
 
 const getTotalTimeStatusInSeconds = () => {
-    let videos = document.getElementsByTagName("ytd-playlist-panel-video-renderer");
+    let videos = playlistMenuNode.getElementsByTagName("ytd-playlist-panel-video-renderer");
     let totalSeconds = 0;
 
     for (let i = 0; i < videos.length; i++) {
@@ -76,14 +78,19 @@ const format = (input) => {
 }
 
 const addToPage = (totalTime) => {
-    let playlistTitle = document.getElementsByClassName("title style-scope ytd-playlist-panel-renderer complex-string")[0].children[0];
+    let playlistTitleNode = playlistMenuNode.querySelectorAll("yt-formatted-string.ytd-playlist-panel-renderer")[0];
+
+    //check if node already contains the title, or has an <a></a> node that contains the text
+    if (playlistTitleNode.innerHTML.indexOf("<a") != -1) {
+        playlistTitleNode = playlistTitleNode.children[0];
+    }
 
     //check if title already contains a watchtime span and filter it out.
-    let playlistTitleText = playlistTitle.innerHTML;
+    let playlistTitleText = playlistTitleNode.innerHTML;
     let spanStartIndex = playlistTitleText.indexOf("<");
     if (spanStartIndex != -1) {
         playlistTitleText = playlistTitleText.substring(0, spanStartIndex).trim()
     }
 
-    playlistTitle.innerHTML = `${playlistTitleText} <span id="totalPlaylistWatchtime">(${totalTime})</span>`;
+    playlistTitleNode.innerHTML = `${playlistTitleText} <span id="totalPlaylistWatchtime">(${totalTime})</span>`;
 }
