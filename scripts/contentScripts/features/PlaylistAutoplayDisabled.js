@@ -6,17 +6,16 @@ const PlaylistAutoplayDisabledSetup = () => {
     playlistAutoplayDisabledInitialized = true;
 
     console.log("PlaylistAutoplayDisabled Enabled");
-    videoElement = document.getElementsByTagName("video")[0];
+    videoElement = document.getElementsByTagName("video")[document.getElementsByTagName("video").length-1];
 
     setInterval(() => {
-        if (videoElement == null) videoElement = document.getElementsByTagName("video")[0];
         let totalTime = videoElement.duration;
         let currentTime = videoElement.currentTime;
         let timeLeft = totalTime - currentTime;
 
         // console.log(timeLeft);
 
-        if (timeLeft <= 2) {
+        if (timeLeft <= 1) {
             videoElement.pause();
         }
     }, 1000);
