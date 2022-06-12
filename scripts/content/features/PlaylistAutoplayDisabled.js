@@ -1,6 +1,8 @@
 let playlistAutoplayDisabledInitialized = false;
+let alreadyPaused = false;
 
 const PlaylistAutoplayDisabledSetup = () => {
+    alreadyPaused = false;
     if (playlistAutoplayDisabledInitialized) return;
     playlistAutoplayDisabledInitialized = true;
 
@@ -14,8 +16,9 @@ const PlaylistAutoplayDisabledSetup = () => {
 
         // console.log(timeLeft);
 
-        if (timeLeft <= 1) {
+        if (timeLeft <= 1 && !alreadyPaused) {
             videoElement.pause();
+            alreadyPaused = true;
         }
     }, 1000);
 }

@@ -4,7 +4,6 @@ let features;
 const main = async () => {
     console.log("YTQoL loading");
     features = await getAllFeatures();
-    console.log(features);
     setUrlChangeListener();
     injectFeatures();
 }
@@ -13,6 +12,7 @@ const setUrlChangeListener = () => {
     setInterval(() => {
         if (location.href != oldTabUrl) {
             oldTabUrl = location.href;
+            // console.log("url changed!")
             injectFeatures();
         }
     }, 1000);
