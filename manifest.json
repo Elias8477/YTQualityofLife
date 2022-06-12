@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Youtube QOLT",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Youtube Quality of Life Tweaks",
   "permissions": [
     "activeTab",
