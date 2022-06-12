@@ -11,12 +11,12 @@
     {
       "matches": ["https://www.youtube.com/*"],
       "js": [
-        "scripts/contentScripts/main.js", 
-        "scripts/contentScripts/features/Highlight.js",
-        "scripts/contentScripts/features/PlaylistAutoplayDisabled.js",
-        "scripts/contentScripts/features/PlaylistRemovePopup.js",
-        "scripts/contentScripts/features/PlaylistTotalWatchtimeCounter.js",
-        "scripts/contentScripts/features/VideoTimeLeft.js"
+        "scripts/content/main.js", 
+        "scripts/content/features/Highlight.js",
+        "scripts/content/features/PlaylistAutoplayDisabled.js",
+        "scripts/content/features/PlaylistRemovePopup.js",
+        "scripts/content/features/PlaylistTotalWatchtimeCounter.js",
+        "scripts/content/features/VideoTimeLeft.js"
       ],
       "css": [
         "styles/Highlight.css",
