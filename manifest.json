@@ -14,10 +14,14 @@
         "scripts/contentScripts/main.js", 
         "scripts/contentScripts/features/Highlight.js",
         "scripts/contentScripts/features/PlaylistAutoplayDisabled.js",
+        "scripts/contentScripts/features/PlaylistRemovePopup.js",
         "scripts/contentScripts/features/PlaylistTotalWatchtimeCounter.js",
-        "scripts/contentScripts/features/PlaylistRemovePopup.js"
+        "scripts/contentScripts/features/VideoTimeLeft.js"
       ],
-      "css": ["styles/Highlight.css"]
+      "css": [
+        "styles/Highlight.css",
+        "styles/VideoTimeLeft.css"
+      ]
     }
   ],
   "icons": {

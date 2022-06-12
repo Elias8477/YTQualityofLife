@@ -1,0 +1,8 @@
+.hidden {
+    display: none;
+}
+
+.ytp-time-display > span {
+    cursor: pointer;
+    color: #ddd;
+}

@@ -1,15 +1,9 @@
 let oldTabUrl = location.href;
-let features = {
-    Highlight: false,
-    HermitcraftHighlight: false,
-    PlaylistAutoplayDisabled: false,
-    PlaylistRemovePopup: false,
-    PlaylistTotalWatchtimeCounter: false
-}
+let features;
 
 const main = () => {
     console.log("YTQoL loading");
-    getAllActiveFeatures();
+    getAllFeatures();
 
     setTimeout(() => {
         setUrlChangeListener();
@@ -18,68 +12,43 @@ const main = () => {
 }
 
 const setUrlChangeListener = () => {
-
     setInterval(() => {
         if (location.href != oldTabUrl) {
             oldTabUrl = location.href;
-            //TODO remove console log
-            console.log("url changed!")
             injectFeatures();
         }
     }, 1000);
 }
 
-const getAllActiveFeatures = () => {
-    chrome.storage.sync.get(["HermitcraftHighlightToggle"], result => {
-        if (result.HermitcraftHighlightToggle) {
-            features.HermitcraftHighlight = true;
-        }
-    });
-
-    chrome.storage.sync.get(["HighlightToggle"], result => {
-        if (result.HighlightToggle) {
-            features.Highlight = true;
-        }
-    });
-
-    chrome.storage.sync.get(["PlaylistAutoplayDisabledToggle"], result => {
-        if (result.PlaylistAutoplayDisabledToggle) {
-            features.PlaylistAutoplayDisabled = true;
-        }
-    });
-
-    chrome.storage.sync.get(["PlaylistRemovePopupToggle"], result => {
-        if (result.PlaylistRemovePopupToggle) {
-            features.PlaylistRemovePopup = true;
-        }
-    });
-
-    chrome.storage.sync.get(["PlaylistTotalWatchtimeCounterToggle"], result => {
-        if (result.PlaylistTotalWatchtimeCounterToggle) {
-            features.PlaylistTotalWatchtimeCounter = true;
-        }
+const getAllFeatures = () => {
+    chrome.storage.sync.get(null, (items) => {
+        features = items;
     });
 }
 
 const injectFeatures = () => {
-    if (features.Highlight && oldTabUrl === "https://www.youtube.com/feed/subscriptions") {
+    if (features.HighlightToggle && oldTabUrl === "https://www.youtube.com/feed/subscriptions") {
         highlightSetup("Highlight");
     }
 
-    if (features.HermitcraftHighlight && oldTabUrl === "https://www.youtube.com/feed/subscriptions") {
+    if (features.HermitcraftHighlightToggle && oldTabUrl === "https://www.youtube.com/feed/subscriptions") {
         highlightSetup("HermitcraftHighlight");
     }
 
-    if (features.PlaylistAutoplayDisabled && /watch\?v=/.test(oldTabUrl)) {
+    if (features.PlaylistAutoplayDisabledToggle && /watch\?v=/.test(oldTabUrl)) {
         PlaylistAutoplayDisabledSetup();
     }
 
-    if (features.PlaylistRemovePopup && /&list=/.test(oldTabUrl)) {
+    if (features.PlaylistRemovePopupToggle && /&list=/.test(oldTabUrl)) {
         PlaylistRemovePopupSetup();
     }
 
-    if (features.PlaylistTotalWatchtimeCounter && /&list=/.test(oldTabUrl)) {
+    if (features.PlaylistTotalWatchtimeCounterToggle && /&list=/.test(oldTabUrl)) {
         PlaylistTotalWatchtimeCounterSetup();
+    }
+
+    if (features.VideoTimeLeftToggle && /watch\?v=/.test(oldTabUrl)) {
+        VideoTimeLeftSetup();
     }
 }
 
