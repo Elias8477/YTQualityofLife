@@ -9,11 +9,10 @@ const highlightSetup = (HCHoption) => {
 
     setTimeout(() => {
         console.log("Highlight Enabled");
-
         buildHTML();
         setHighlightObservers();
         if (option === "HermitcraftHighlight") highlight("hermitcraft");
-    }, 3000);
+    }, 2000);
 }
 
 const setHighlightObservers = () => {

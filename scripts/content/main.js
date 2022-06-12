@@ -1,14 +1,12 @@
 let oldTabUrl = location.href;
 let features;
 
-const main = () => {
+const main = async () => {
     console.log("YTQoL loading");
-    getAllFeatures();
-
-    setTimeout(() => {
-        setUrlChangeListener();
-        injectFeatures();
-    }, 2000);
+    features = await getAllFeatures();
+    console.log(features);
+    setUrlChangeListener();
+    injectFeatures();
 }
 
 const setUrlChangeListener = () => {
@@ -20,10 +18,16 @@ const setUrlChangeListener = () => {
     }, 1000);
 }
 
-const getAllFeatures = () => {
-    chrome.storage.sync.get(null, (items) => {
-        features = items;
-    });
+const getAllFeatures = async () => {
+    return new Promise((resolve, reject) => {
+        try {
+            chrome.storage.sync.get(null, (items) => {
+                resolve(items);
+            });
+        } catch (ex) {
+            reject(ex);
+        }
+    })
 }
 
 const injectFeatures = () => {
