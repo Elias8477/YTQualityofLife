@@ -4,12 +4,12 @@ let option;
 let sectionRenderListLength = 1;
 
 const highlightSetup = (HCHoption) => {
-    if(document.getElementById("highlight") != null) return;
+    if (document.getElementById("highlight") != null) return;
     option = HCHoption;
 
     setTimeout(() => {
         console.log("Highlight Enabled");
-        
+
         buildHTML();
         setHighlightObservers();
         if (option === "HermitcraftHighlight") highlight("hermitcraft");

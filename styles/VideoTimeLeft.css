@@ -2,7 +2,8 @@
     display: none;
 }
 
-.ytp-time-display > span {
-    cursor: pointer;
+.ytp-time-display > span:nth-child(2) {
     color: #ddd;
+    cursor: pointer;
+    user-select: none;
 }
