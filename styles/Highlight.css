@@ -99,6 +99,7 @@
 
 .keyword {
   color: white;
+  mix-blend-mode: difference;
   font-size: 1.4rem;
   user-select: none;
   cursor: pointer;
@@ -109,4 +110,20 @@
 .keyword::after {
   margin-left: 5px;
   content: attr(data-count);
+}
+
+.highlighted {
+  /* background-color: rgba(127, 127, 127, 0.2); */
+  background-color: rgba(255, 0, 0, 0.3);
+  animation: blinker 2s linear infinite;
+}
+
+.highlighted:hover {
+  background-color: transparent;
+}
+
+@keyframes blinker {
+  50% {
+    background-color: transparent;
+  }
 }

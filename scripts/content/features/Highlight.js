@@ -161,7 +161,7 @@ const highlight = (keyword) => {
         while (!titleContainsKeyword && j < videoTitleWordsArray.length) {
             if (videoTitleWordsArray[j] === keyword) {
                 titleContainsKeyword = true;
-                currentVideo.style.backgroundColor = "red";
+                currentVideo.classList.add("highlighted");
 
                 let list = highlightedVideos.get(currentVideo);
                 if (list == null) {
@@ -213,7 +213,7 @@ const unhighlight = (target) => {
 
         //check if array is empty and unhighlight
         if (keywords.length === 0) {
-            video.style.backgroundColor = "";
+            video.classList.remove("highlighted");
             highlightedVideos.delete(video);
         }
     })
@@ -225,7 +225,7 @@ const unhighlight = (target) => {
 }
 
 const resetHighlight = () => {
-    Array.from(highlightedVideos.keys()).forEach(video => video.style.backgroundColor = "");
+    Array.from(highlightedVideos.keys()).forEach(video => video.classList.remove("highlighted"));
     highlightedVideos.clear();
     keywords.length = 0;
     document.getElementById("keywordList").innerHTML = "";
