@@ -19,6 +19,9 @@ const createHTML = () => {
     
     timeLeftElement.setAttribute("class", "ytp-time-left");
     timeWrapperElement.insertBefore(timeLeftElement, timeWrapperElement.children[0]);
+
+    //add class to existing span for custom css
+    document.querySelector(".ytp-time-left").parentElement.classList.add("videoTimeLeftCSS")
 }
 
 const updateTimeLeft = () => {

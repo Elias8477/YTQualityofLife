@@ -2,7 +2,7 @@
     display: none;
 }
 
-.ytp-time-display > span:nth-child(2) {
+.videoTimeLeftCSS {
     color: #ddd;
     cursor: pointer;
     user-select: none;
