@@ -15,7 +15,7 @@
 
 <body>
     <header>
-        <img src="images/logo/logoWithText.png" alt="Extension logo">
+        <img src="images/logo/logoWithText.png" alt="Extension logo" draggable="false">
     </header>
 
     <div id="outerWrapper">
@@ -23,31 +23,57 @@
             <h1>Features</h1>
             <ul>
                 <li><label><input type="checkbox" class="feature" id="HighlightToggle"> Highlight</label></li>
-                <li><label><input type="checkbox" class="feature" id="HermitcraftHighlightToggle"> HighlightHermitcraft</label></li>
-                <li><label><input type="checkbox" class="feature" id="PlaylistAutoplayDisabledToggle"> PlaylistAutoplayDisabled</label></li>
-                <li><label><input type="checkbox" class="feature" id="PlaylistRemovePopupToggle"> PlaylistRemovePopup</label></li>
-                <li><label><input type="checkbox" class="feature" id="PlaylistTotalWatchtimeCounterToggle"> PlaylistTotalWatchtimeCounter</label></li>
+                <p class="feature-information">You can highlight videos on the subscriptions page by writing a keyword in the input field located in the left (unfolded) sidebar above Home, Explore, Shorts, Subscriptions, ...</p>
+
+                <li><label><input type="checkbox" class="feature" id="HermitcraftHighlightToggle">
+                        HighlightHermitcraft</label></li>
+                <p class="feature-information">Videos containing Hermitcraft in their title will automatically be highlighted. Besides that it is identical to the feature mentioned above.</p>
+
+                <li><label><input type="checkbox" class="feature" id="PlaylistAutoplayDisabledToggle">
+                        PlaylistAutoplayDisabled</label></li>
+                <p class="feature-information">You can disable autoplay when watching videos normally. But when a video ends inside a playlist it automatically starts the next one. This feature automatically stops the video a few seconds before the end so you can peacefully scroll through the comments without being brought to the next video.</p>
+
+                <li><label><input type="checkbox" class="feature" id="PlaylistRemovePopupToggle">
+                        PlaylistRemovePopup</label></li>
+                <p class="feature-information">When watching a video that's inside a playlist / Watch Later, Youtube decided it was a great idea to remove the trashcan to a popup instead of directly next to the video preview. Once this feature is enabled the popup will be disabled and you'll now be able to delete videos by clicking on the trashcan like before.</p>
+
+                <li><label><input type="checkbox" class="feature" id="PlaylistTotalWatchtimeCounterToggle">
+                        PlaylistTotalWatchtimeCounter</label></li>
+                <p class="feature-information">Displays the total watchtime of a playlist or queue next to its title inside the playlist/queue panel.</p>
+
                 <li><label><input type="checkbox" class="feature" id="VideoTimeLeftToggle"> VideoTimeLeft</label></li>
+                <p class="feature-information">When hovering over a youtube video the progress bar appears. Next to the volume controls you'll find the current and total time of the video. Clicking changes the current time to time left until the video ends.</p>
             </ul>
         </div>
 
         <div class="wrapper" id="infoWrapper">
             <h1>Info</h1>
-            <p>Make sure you refresh all browser tabs that are using the extension when enabling or disabling features to apply the changes.</p>
-            <p>Clicking the reset button will remove all stored data. The extension will behave like a fresh install.</p>
-        </div>
+            <p class="info">Make sure you refresh all browser tabs that are using the extension when enabling or
+                disabling features to apply the changes.</p>
+            <p class="info">Clicking the reset button will remove all stored data. The extension will behave like a
+                fresh install.</p>
+            <p class="info">Stored data:</p>
+            <ul class="info">
+                <li>Enabled features</li>
+                <li>VideoTimeLeft shown or not on click</li>
+            </ul>
 
-        <div class="wrapper" id="defaultsWrapper">
-            <h1>Restore defaults</h1>
-            <button id="resetButton">RESET</button>
+            <p id="feature-information-location" class="hidden"></p>
         </div>
     </div>
 
     <footer>
-        <ul>
-            <li><a href="https://github.com/Elias8477/YTQualityofLife" target="_blank"> Github </a></li>
-            <li><a href="#"> Chrome webstore </a></li>
-        </ul>
+        <div class="wrapper" id="defaultsWrapper">
+            <h1>Restore defaults</h1>
+            <button id="resetButton">RESET</button>
+        </div>
+
+        <div class="footerwrapper" id="linksWrapper">
+            <ul>
+                <li><a href="https://github.com/Elias8477/YTQualityofLife" target="_blank"> Github </a></li>
+                <li><a href="#"> Chrome webstore </a></li>
+            </ul>
+        </div>
     </footer>
 </body>
 

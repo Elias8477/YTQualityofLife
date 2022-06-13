@@ -1,5 +1,6 @@
 const popupSetup = () => {
     loadSettings()
+    setPopupEventlisteners();
 
     //when checkbox is pressed save its state to chrome.storage
     let features = document.getElementsByClassName("feature");
@@ -8,6 +9,40 @@ const popupSetup = () => {
     }
 
     document.getElementById("resetButton").addEventListener("click", resetToDefault);
+}
+
+const setPopupEventlisteners = () => {
+    let features = document.querySelectorAll(".feature");
+
+    for (let i = 0; i < features.length; i++) {
+        features[i].parentElement.addEventListener("mouseover", event => {
+            let information = document.querySelectorAll(".feature-information")[i].innerHTML
+            setInfo(information);
+        });
+
+        features[i].parentElement.addEventListener("mouseout", event => {
+            clearInfo();
+        });
+    }
+}
+
+const setInfo = (text) => {
+   document.querySelectorAll(".info").forEach(element => {
+    element.classList.add("hidden");
+   })
+
+   let textElement = document.querySelector("#feature-information-location");
+
+   textElement.innerHTML = text;
+   textElement.classList.remove("hidden");
+}
+
+const clearInfo = () => {
+    document.querySelectorAll(".info").forEach(element => {
+        element.classList.remove("hidden");
+       })
+
+   document.querySelector("#feature-information-location").classList.add("hidden");
 }
 
 const checkSettings = (event) => {

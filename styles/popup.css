@@ -1,3 +1,8 @@
+:root {
+  --theme-color: red;
+  --theme-color-hover: #d60000;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,7 +10,21 @@
 
 body {
   font-family: "Roboto", sans-serif;
-  accent-color: red;
+  accent-color: var(--theme-color);
+  width: 300px;
+  height: 600px;
+  font-size: 0.85em;
+}
+
+.hidden {
+  display: none;
+}
+
+/* header */
+img {
+  display: block;
+  margin: 0 auto;
+  user-select: none;
 }
 
 header {
@@ -13,13 +32,24 @@ header {
   padding: 15px 15px 10px 15px;
 }
 
+/* body */
 h1 {
   margin-top: 15px;
-  font-size: 1.5em;
+  font-size: 1.8em;
   font-weight: bold;
+  user-select: none;
 }
 
 p {
+  user-select: none;
+}
+
+input:hover,
+label:hover {
+  cursor: pointer;
+}
+
+.info {
   text-align: justify;
 }
 
@@ -27,6 +57,15 @@ ul {
   margin: 5px 0 0 0;
   padding: 0;
   list-style: none;
+  user-select: none;
+}
+
+.feature-information {
+  display: none;
+}
+
+#feature-information-location {
+  margin-top: 5px !important;
 }
 
 #outerWrapper {
@@ -34,48 +73,66 @@ ul {
 }
 
 #infoWrapper p {
+  margin-top: 10px;
+}
+
+#infoWrapper p:first-of-type {
   margin-top: 5px;
 }
 
-#defaultsWrapper {
-  display: flex;
+#infoWrapper ul {
+  list-style: disc;
+  margin-left: 16px;
+  margin-top: 0;
 }
 
-#defaultsWrapper button {
-  margin-top: 15px;
-  margin-left: 15px;
-  width: 70px;
-  background-color: red;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 8px;
-  transition-duration: 0.4s;
-  box-shadow: 1px 3px 5px 0 rgba(0, 0, 0, 0.4);
-}
-
-#defaultsWrapper button:hover {
-  background-color: #d60000;
-}
-
+/* footer */
 footer {
+  position: absolute;
+  bottom: 0;
+}
+
+#linksWrapper {
   border-top: 1px solid #cccccc;
   padding: 10px 15px 15px 15px;
   display: flex;
   justify-content: center;
 }
 
-footer li {
+#linksWrapper li {
   display: inline-block;
   padding: 0 10px;
 }
 
-footer a {
+#linksWrapper a {
   text-decoration: none;
   color: black;
 }
 
-footer a:hover {
+#linksWrapper a:hover {
   text-decoration: underline;
   font-weight: bold;
+}
+
+#defaultsWrapper {
+  display: flex;
+  padding: 0 15px 15px 15px;
+}
+
+#defaultsWrapper button {
+  margin-top: 15px;
+  margin-left: 15px;
+  width: 70px;
+  background-color: var(--theme-color);
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  transition-duration: 0.4s;
+  box-shadow: 1px 3px 5px 0 rgba(0, 0, 0, 0.4);
+  user-select: none;
+}
+
+#defaultsWrapper button:hover {
+  background-color: var(--theme-color-hover);
 }
