@@ -13,7 +13,7 @@ body {
   font-family: "Roboto", sans-serif;
   accent-color: var(--theme-color);
   width: var(--width);
-  height: 600px;
+  height: 540px;
   font-size: 0.85em;
 }
 
@@ -125,7 +125,6 @@ footer {
 
 #defaultsWrapper {
   display: flex;
-  justify-content: center;
   padding: 0 15px 15px 15px;
 }
 
