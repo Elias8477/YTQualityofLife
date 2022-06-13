@@ -1,6 +1,7 @@
 const popupSetup = () => {
     loadSettings()
     setPopupEventlisteners();
+    setAppVersion();
 
     //when checkbox is pressed save its state to chrome.storage
     let features = document.getElementsByClassName("feature");
@@ -43,6 +44,11 @@ const clearInfo = () => {
        })
 
    document.querySelector("#feature-information-location").classList.add("hidden");
+}
+
+const setAppVersion = () => {
+    let manifest = chrome.runtime.getManifest();
+    document.querySelector("#version").innerHTML = `V${manifest.version}`
 }
 
 const checkSettings = (event) => {

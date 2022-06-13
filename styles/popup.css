@@ -1,6 +1,7 @@
 :root {
   --theme-color: red;
   --theme-color-hover: #d60000;
+  --width: 300px;
 }
 
 * {
@@ -11,7 +12,7 @@
 body {
   font-family: "Roboto", sans-serif;
   accent-color: var(--theme-color);
-  width: 300px;
+  width: var(--width);
   height: 600px;
   font-size: 0.85em;
 }
@@ -21,15 +22,22 @@ body {
 }
 
 /* header */
+header {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid #cccccc;
+  padding: 15px 15px 10px 15px;
+}
+
 img {
-  display: block;
-  margin: 0 auto;
   user-select: none;
 }
 
-header {
-  border-bottom: 1px solid #cccccc;
-  padding: 15px 15px 10px 15px;
+#version {
+  margin-top: 25px;
+  margin-left: -10px;
+  font-size: 1.3em;
+  font-weight: bold;
 }
 
 /* body */
@@ -89,6 +97,7 @@ ul {
 /* footer */
 footer {
   position: absolute;
+  width: var(--width);
   bottom: 0;
 }
 
@@ -116,6 +125,7 @@ footer {
 
 #defaultsWrapper {
   display: flex;
+  justify-content: center;
   padding: 0 15px 15px 15px;
 }
 
