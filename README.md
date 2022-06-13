@@ -26,6 +26,10 @@ Youtube decided it was a great idea to remove the trashcan to a popup instead of
 
 Displays the total watchtime of a playlist next to its title.
 
+## VideoTimeLeft
+![preview of VideoTimeLeft feature](https://raw.githubusercontent.com/Elias8477/ReadmeImages/main/YTQualityofLife/VideoTimeLeft-preview.gif)
+When hovering over a youtube video the progress bar appears. Next to the volume controls you'll find the current and total time of the video. Clicking changes the current time to time left until the video ends.
+
 # How to install
 
 I can't upload to the Chrome Webstore because of a registration fee. You'll have to install the extension by enabling developer options.
