@@ -20,5 +20,5 @@ const PlaylistAutoplayDisabledSetup = () => {
             videoElement.pause();
             alreadyPaused = true;
         }
-    }, 750);
+    }, 300);
 }
