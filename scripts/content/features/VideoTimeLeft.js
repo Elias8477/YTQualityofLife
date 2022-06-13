@@ -1,9 +1,8 @@
-let videoTimeLeftInitialized = false;
+let timeWrapperElement;
 let timeLeftShown = false;
 
 const VideoTimeLeftSetup = () => {
-    if (videoTimeLeftInitialized) return;
-    videoTimeLeftInitialized = true;
+    if (document.querySelector(".ytp-time-left") != null) return;
 
     console.log("VideoTimeLeft Enabled");
     createHTML();
@@ -14,7 +13,8 @@ const VideoTimeLeftSetup = () => {
 }
 
 const createHTML = () => {
-    let timeWrapperElement = document.querySelector(".ytp-time-duration").parentElement;
+    timeWrapperElement = document.querySelectorAll(".ytp-time-duration");
+    timeWrapperElement = timeWrapperElement[timeWrapperElement.length - 1].parentElement;
     let timeLeftElement = document.createElement("span");
 
     timeLeftElement.setAttribute("class", "ytp-time-left");
@@ -38,23 +38,21 @@ const updateTimeLeft = () => {
 const checkWhichElementToHide = () => {
     chrome.storage.sync.get("VideoTimeLeftShown", item => {
         if (item.VideoTimeLeftShown) {
-            document.querySelector(".ytp-time-current").classList.add("hidden");
+            timeWrapperElement.querySelector(".ytp-time-current").classList.add("hidden");
         } else {
-            document.querySelector(".ytp-time-left").classList.add("hidden");
+            timeWrapperElement.querySelector(".ytp-time-left").classList.add("hidden");
         }
     })
 }
 
 const setVideoTimeLeftObserver = () => {
-    let videoCurrentTimeElement = document.querySelector(".ytp-time-current");
+    let videoCurrentTimeElement = timeWrapperElement.querySelector(".ytp-time-current");
     new MutationObserver(() => {
         updateTimeLeft();
     }).observe(videoCurrentTimeElement, { childList: true });
 }
 
 const setClickListener = () => {
-    let timeWrapperElement = document.querySelector(".ytp-time-duration").parentElement;
-
     timeWrapperElement.addEventListener("click", () => {
         document.querySelector(".ytp-time-current").classList.toggle("hidden");
         document.querySelector(".ytp-time-left").classList.toggle("hidden");
