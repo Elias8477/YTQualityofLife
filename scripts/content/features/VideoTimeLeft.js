@@ -16,7 +16,7 @@ const VideoTimeLeftSetup = () => {
 const createHTML = () => {
     let timeWrapperElement = document.querySelector(".ytp-time-duration").parentElement;
     let timeLeftElement = document.createElement("span");
-    
+
     timeLeftElement.setAttribute("class", "ytp-time-left");
     timeWrapperElement.insertBefore(timeLeftElement, timeWrapperElement.children[0]);
 
@@ -28,7 +28,8 @@ const updateTimeLeft = () => {
     let videoElement = document.getElementsByTagName("video")[document.getElementsByTagName("video").length - 1];
     let totalTime = videoElement.duration;
     let currentTime = videoElement.currentTime;
-    let timeLeft = "-" + format(totalTime - currentTime);
+    let playbackSpeed = videoElement.playbackRate;
+    let timeLeft = "-" + format((totalTime - currentTime) / playbackSpeed);
 
     if (timeLeft.includes("NaN")) return;
     document.querySelector(".ytp-time-left").innerHTML = timeLeft;
