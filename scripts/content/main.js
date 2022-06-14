@@ -22,11 +22,7 @@ const setUrlChangeListener = () => {
 
 const injectFeatures = () => {
     if (features.HighlightToggle && oldTabUrl === "https://www.youtube.com/feed/subscriptions") {
-        highlightSetup("Highlight");
-    }
-
-    if (features.HermitcraftHighlightToggle && oldTabUrl === "https://www.youtube.com/feed/subscriptions") {
-        highlightSetup("HermitcraftHighlight");
+        highlightSetup();
     }
 
     if (features.PlaylistAutoplayDisabledToggle && /watch\?v=/.test(oldTabUrl)) {

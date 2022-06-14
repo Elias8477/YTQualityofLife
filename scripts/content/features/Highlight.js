@@ -2,16 +2,15 @@ let highlightedVideos = new Map();
 let keywords = [];
 let option;
 let sectionRenderListLength = 1;
+let autoHighlightListShown = false;
 
-const highlightSetup = (HCHoption) => {
+const highlightSetup = () => {
     if (document.getElementById("highlight") != null) return;
-    option = HCHoption;
 
     setTimeout(() => {
         console.log("Highlight Enabled");
         buildHighlightHTML();
         setHighlightObservers();
-        if (option === "HermitcraftHighlight") highlight("hermitcraft");
     }, 2000);
 }
 
@@ -60,12 +59,30 @@ const buildHighlightHTML = () => {
 
     let searchIcon = createSVGElement("#ffffff", "M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z");
     searchButton.appendChild(searchIcon);
+    let autoHighlightAddIcon = createSVGElement("#ffffff", "M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z; M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z");
+    autoHighlightAddIcon.classList.add("hidden");
+    searchButton.appendChild(autoHighlightAddIcon);
+
 
     let searchText = document.createElement("p");
     searchText.innerHTML = "Search";
     searchText.setAttribute("class", "buttonText");
     searchButton.appendChild(searchText);
+
+    let autoHighlightAddText = document.createElement("p");
+    autoHighlightAddText.innerHTML = "add";
+    autoHighlightAddText.setAttribute("class", "buttonText hidden");
+    autoHighlightAddText.setAttribute("id", "autoHighlightAddText");
+    searchButton.appendChild(autoHighlightAddText);
+
     gridWrapper.appendChild(searchButton);
+
+    //auto highlight add button
+    let autoHighlightAddButton = document.createElement("button");
+    autoHighlightAddButton.setAttribute("id", "autoHighlightAddButton");
+    autoHighlightAddButton.setAttribute("class", "button hidden");
+
+
 
 
     //reset button
@@ -83,12 +100,12 @@ const buildHighlightHTML = () => {
     gridWrapper.appendChild(resetButton);
 
 
-    //hermitcraft button
-    let hermitcraftButton = document.createElement("button");
-    hermitcraftButton.setAttribute("id", "hermitcraftButton");
-    hermitcraftButton.setAttribute("class", "button");
-    hermitcraftButton.innerHTML = "Hermitcraft";
-    if (option === "HermitcraftHighlight") gridWrapper.appendChild(hermitcraftButton);
+    //toggle button
+    let toggleButton = document.createElement("button");
+    toggleButton.setAttribute("id", "toggleButton");
+    toggleButton.setAttribute("class", "button");
+    toggleButton.innerHTML = "show auto highlighted";
+    gridWrapper.appendChild(toggleButton);
 
 
     //eventlisteners for buttons or keypresses
@@ -96,43 +113,135 @@ const buildHighlightHTML = () => {
         event.preventDefault();
         if (event.key === "Enter") {
             let keywordsInput = inputField.value.toLowerCase().split(" ").filter(Boolean);
-            keywordsInput.forEach(keyword => highlight(keyword));
+
+            if (autoHighlightListShown) {
+                keywordsInput.forEach(keyword => autoHighlight(keyword));
+            } else {
+                keywordsInput.forEach(keyword => highlight(keyword));
+            }
+
             inputField.value = ""
         }
     });
 
+    //TODO change text & icon depending on if auto highlighted is shown
     searchButton.addEventListener("click", () => {
         let keywordsInput = inputField.value.toLowerCase().split(" ").filter(Boolean);
-        keywordsInput.forEach(keyword => highlight(keyword));
+
+        if (autoHighlightListShown) {
+            keywordsInput.forEach(keyword => autoHighlight(keyword));
+        } else {
+            keywordsInput.forEach(keyword => highlight(keyword));
+        }
+
         inputField.value = ""
     });
 
     resetButton.addEventListener("click", resetHighlight);
+    toggleButton.addEventListener("click", () => toggleAutoHighlightList());
 
-    if (option === "HermitcraftHighlight") hermitcraftButton.addEventListener("click", () => highlight("hermitcraft"));
+    //lists
+    buildHighlightedKeywordList(wrapper);
+    buildAutoHighlightList(wrapper);
+}
 
-
-    //keyword list
+const buildHighlightedKeywordList = (wrapper) => {
     let keywordListWrapper = document.createElement("div");
-    keywordListWrapper.setAttribute("id", "keywordListWrapper");
+    keywordListWrapper.setAttribute("id", "HighlightedKeywordListWrapper");
     wrapper.appendChild(keywordListWrapper);
 
     let keywordList = document.createElement("ul");
-    keywordList.setAttribute("id", "keywordList");
+    keywordList.setAttribute("id", "highlightedKeywordList");
     keywordListWrapper.appendChild(keywordList);
 
     keywordList.addEventListener("click", (event) => unhighlight(event.target));
 }
 
+const buildAutoHighlightList = (wrapper) => {
+    let autoHighlightWrapper = document.createElement("div");
+    autoHighlightWrapper.setAttribute("id", "autoHighlightWrapper");
+    wrapper.appendChild(autoHighlightWrapper);
+
+    let keywordList = document.createElement("ul");
+    keywordList.setAttribute("id", "autoKeywordList");
+    keywordList.setAttribute("class", "hidden");
+    autoHighlightWrapper.appendChild(keywordList);
+
+    keywordList.addEventListener("click", (event) => removeFromAutoHighlightList(event.target));
+
+    getAutoHighlightedWords();
+}
+
+const getAutoHighlightedWords = async () => {
+    let keywords = await getLocalStorage("autoHighlightList");
+    let listElement = document.querySelector("#autoKeywordList");
+
+    keywords.forEach(keyword => {
+        highlight(keyword);
+
+        let keywordElement = document.createElement("li");
+        keywordElement.innerHTML = keyword;
+        keywordElement.setAttribute("class", "keyword")
+        listElement.appendChild(keywordElement);
+    })
+}
+
+const autoHighlight = async (keyword) => {
+    let listElement = document.querySelector("#autoKeywordList");
+    let keywordList = await getLocalStorage("autoHighlightList");
+    if (!Array.isArray(keywordList)) keywordList = [];
+
+    if (keywordList.includes(keyword)) return;
+
+    let keywordElement = document.createElement("li");
+    keywordElement.innerHTML = keyword;
+    keywordElement.setAttribute("class", "keyword")
+    listElement.appendChild(keywordElement);
+
+    keywordList.push(keyword);
+    setLocalStorage("autoHighlightList", keywordList);
+}
+
+const removeFromAutoHighlightList = async (element) => {
+    let keyword = element.innerHTML;
+    let keywordList = await getLocalStorage("autoHighlightList");
+    keywordList = keywordList.filter(k => k !== keyword);
+
+    //remove <li> from the HTML keyword wrapper
+    element.remove();
+    setLocalStorage("autoHighlightList", keywordList);
+}
+
+const toggleAutoHighlightList = () => {
+    autoHighlightListShown = !autoHighlightListShown;
+    let toggleButton = document.querySelector("#toggleButton");
+    let highlightButton = document.querySelector("#highlightButton");
+    let highlightedKeywordList = document.querySelector("#highlightedKeywordList");
+    let autoKeywordList = document.querySelector("#autoKeywordList");
+
+    if (autoHighlightListShown) {
+        toggleButton.innerHTML = "show currently highlighted";
+    } else {
+        toggleButton.innerHTML = "show auto highlighted";
+    }
+
+    highlightedKeywordList.classList.toggle("hidden");
+    autoKeywordList.classList.toggle("hidden");
+
+    Array.from(highlightButton.children).forEach(child => {
+        child.classList.toggle("hidden");
+    });
+}
+
 const highlight = (keyword) => {
-    let videos = document.getElementsByTagName("ytd-grid-video-renderer");
+    let videoArray = document.getElementsByTagName("ytd-grid-video-renderer");
 
     let currentVideo = "";
     let videoTitle = "";
     let videoTitleWordsArray = "";
 
-    for (let i = 0; i < videos.length; i++) {
-        currentVideo = videos[i]
+    for (let i = 0; i < videoArray.length; i++) {
+        currentVideo = videoArray[i]
         videoTitle = currentVideo.querySelector(`a[id^="video-title"]`).innerHTML;
         videoTitleWordsArray = videoTitle.split(" ").map(word => word.toLowerCase());
         let titleContainsKeyword = false;
@@ -156,13 +265,13 @@ const highlight = (keyword) => {
         }
     }
 
-    addHighlightedWordToWrapper(keyword);
+    addHighlightedWordToList(keyword);
     updateKeywordCount();
 }
 
-const addHighlightedWordToWrapper = (currentKeyword) => {
-    let keywordListWrapper = document.getElementById("keywordList");
-    let keywordList = document.querySelectorAll(".keyword");
+const addHighlightedWordToList = (currentKeyword) => {
+    let keywordListWrapper = document.getElementById("highlightedKeywordList");
+    let keywordList = document.querySelector("#highlightedKeywordList").querySelectorAll(".keyword");
     let exists = false
 
     keywordList.forEach(keyword => {
@@ -179,8 +288,8 @@ const addHighlightedWordToWrapper = (currentKeyword) => {
     keywords.push(currentKeyword);
 }
 
-const unhighlight = (target) => {
-    keyword = target.innerHTML;
+const unhighlight = (element) => {
+    let keyword = element.innerHTML;
 
     //search videos where title matches current keyword and does not match any other keywords
     highlightedVideos.forEach((keywords, video) => {
@@ -199,7 +308,7 @@ const unhighlight = (target) => {
     })
 
     //remove <li> from the HTML keyword wrapper
-    target.remove();
+    element.remove();
     keywords = keywords.filter(k => k !== keyword)
     updateKeywordCount();
 }
@@ -213,7 +322,7 @@ const resetHighlight = () => {
 
 const updateKeywordCount = () => {
     let count = getKeywordCount();
-    let keywordList = document.querySelectorAll(".keyword");
+    let keywordList = document.querySelector("#highlightedKeywordList").querySelectorAll(".keyword");
 
     keywordList.forEach(keywordElement => {
         let keyword = keywordElement.innerHTML;

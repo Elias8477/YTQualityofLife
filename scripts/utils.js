@@ -5,7 +5,7 @@ const getLocalStorage = async (key) => {
     return new Promise((resolve, reject) => {
         try {
             chrome.storage.local.get([key], (items) => {
-                resolve(items);
+                resolve(items[key]);
             });
         } catch (ex) {
             reject(ex);
@@ -33,7 +33,7 @@ const getSyncedStorage = async (key) => {
     return new Promise((resolve, reject) => {
         try {
             chrome.storage.sync.get([key], (items) => {
-                resolve(items);
+                resolve(items[key]);
             });
         } catch (ex) {
             reject(ex);

@@ -6,7 +6,7 @@ const popupSetup = () => {
     //when checkbox is pressed save its state to chrome.storage
     let features = document.getElementsByClassName("feature");
     for (let i = 0; i < features.length; i++) {
-        features[i].addEventListener("click", checkSettings);
+        features[i].addEventListener("click", saveSetting);
     }
 
     document.getElementById("resetButton").addEventListener("click", resetToDefault);
@@ -31,12 +31,12 @@ const setPopupEventlisteners = () => {
     let features = document.querySelectorAll(".feature");
 
     for (let i = 0; i < features.length; i++) {
-        features[i].parentElement.addEventListener("mouseover", event => {
+        features[i].parentElement.addEventListener("mouseover", () => {
             let information = document.querySelectorAll(".feature-information")[i].innerHTML
             setInfo(information);
         });
 
-        features[i].parentElement.addEventListener("mouseout", event => {
+        features[i].parentElement.addEventListener("mouseout", () => {
             clearInfo();
         });
     }
@@ -66,28 +66,8 @@ const setAppVersion = () => {
     document.querySelector("#version").innerHTML = `V${manifest.version}`
 }
 
-const checkSettings = (event) => {
+const saveSetting = (event) => {
     let element = event.target
-    let id = element.getAttribute("id")
-    let hcHighlight = document.getElementById("HermitcraftHighlightToggle")
-    let highlight = document.getElementById("HighlightToggle")
-
-    if (id === "HermitcraftHighlightToggle") {
-        if (hcHighlight.checked && highlight.checked) {
-            highlight.checked = false;
-            saveSetting(highlight)
-        }
-    } else if (id === "HighlightToggle") {
-        if (hcHighlight.checked && highlight.checked) {
-            hcHighlight.checked = false;
-            saveSetting(hcHighlight)
-        }
-    }
-
-    saveSetting(element)
-}
-
-const saveSetting = (element) => {
     let id = element.getAttribute("id");
     chrome.storage.local.set({ [id]: element.checked })
 }

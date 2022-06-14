@@ -5,10 +5,7 @@ On first use **all** features are disabled. Click the extension icon in the top 
 ## Highlight
 ![preview of Highlight feature](https://raw.githubusercontent.com/Elias8477/ReadmeImages/main/YTQualityofLife/Highlight-preview.gif)
 
-You can highlight videos on the subscriptions page by writing a keyword in the input field located in the left (unfolded) sidebar above Home, Explore, Shorts, Subscriptions, ...
-
-## HermitcraftHighlight
-Videos containing Hermitcraft in their title will automatically be highlighted. Besides that it is identical to the feature mentioned above.
+You can highlight videos on the subscriptions page by writing a keyword in the input field located in the left (unfolded) sidebar above Home, Explore, Shorts, Subscriptions, ... You can also automatically highlight keywords on page-load by clicking the button "show auto highlighted" and entering the desired keywords. To unhighlight a word, or remove it from the auto-highlight list: Click the keyword itself.
 
 ## PlaylistAutoplayDisabled
 ![preview of PlaylistAutoplayDisabled feature](https://raw.githubusercontent.com/Elias8477/ReadmeImages/main/YTQualityofLife/PlaylistAutoplayDisabled-preview.gif)

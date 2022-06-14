@@ -6,6 +6,20 @@
   font-family: Roboto;
 }
 
+li, span {
+  color: white;
+  mix-blend-mode: difference;
+}
+
+input {
+  height: 30px;
+  font-size: 1.4rem;
+  color: white;
+  background-color: #121212;
+  text-align: center;
+  border: none;
+}
+
 #highlightBreakLine {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   margin-top: 12px;
@@ -30,12 +44,6 @@
   grid-row-end: 2;
   grid-column-start: 1;
   grid-column-end: 3;
-  height: 30px;
-  font-size: 1.4rem;
-  color: white;
-  background-color: #121212;
-  text-align: center;
-  border: none;
 }
 
 #highlightInput:focus {
@@ -67,6 +75,14 @@
   margin: 6px 3px 6px 0;
 }
 
+#autoHighlightAddButton {
+  grid-row-start: 2;
+  grid-row-end: 3;
+  grid-column-start: 1;
+  grid-column-end: 2;
+  margin: 6px 3px 6px 0;
+}
+
 #resetButton {
   grid-row-start: 2;
   grid-row-end: 3;
@@ -75,7 +91,7 @@
   margin: 6px 0 6px 3px;
 }
 
-#hermitcraftButton {
+#toggleButton {
   grid-row-start: 3;
   grid-row-end: 4;
   grid-column-start: 1;
@@ -97,9 +113,11 @@
   color: white;
 }
 
+#autoHighlightAddText {
+  padding: 0 10px;
+}
+
 .keyword {
-  color: white;
-  mix-blend-mode: difference;
   font-size: 1.4rem;
   user-select: none;
   cursor: pointer;
@@ -127,3 +145,5 @@
     background-color: transparent;
   }
 }
+
+/* autoHighlight */
