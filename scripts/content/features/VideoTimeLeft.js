@@ -5,14 +5,14 @@ const VideoTimeLeftSetup = () => {
     if (document.querySelector(".ytp-time-left") != null) return;
 
     console.log("VideoTimeLeft Enabled");
-    createHTML();
+    buildVideoTimeLeftHTML();
     updateTimeLeft();
     checkWhichElementToHide();
     setVideoTimeLeftObserver();
     setClickListener();
 }
 
-const createHTML = () => {
+const buildVideoTimeLeftHTML = () => {
     timeWrapperElement = document.querySelectorAll(".ytp-time-duration");
     timeWrapperElement = timeWrapperElement[timeWrapperElement.length - 1].parentElement;
     let timeLeftElement = document.createElement("span");
@@ -29,7 +29,7 @@ const updateTimeLeft = () => {
     let totalTime = videoElement.duration;
     let currentTime = videoElement.currentTime;
     let playbackSpeed = videoElement.playbackRate;
-    let timeLeft = "-" + format((totalTime - currentTime) / playbackSpeed);
+    let timeLeft = "-" + formatSecondsToHHMMSS((totalTime - currentTime) / playbackSpeed);
 
     if (timeLeft.includes("NaN")) return;
     document.querySelector(".ytp-time-left").innerHTML = timeLeft;

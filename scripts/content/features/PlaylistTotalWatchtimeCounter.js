@@ -24,7 +24,7 @@ const setPlaylistTotalWatchtimeCounterObserver = () => {
 }
 
 const updateSpan = () => {
-    let totalSeconds = format(getTotalTimeStatusInSeconds() / getPlaybackSpeed());
+    let totalSeconds = formatSecondsToHHMMSS(getTotalTimeStatusInSeconds() / getVideoElement().playbackRate);
     addToPage(totalSeconds);
 }
 
@@ -51,34 +51,6 @@ const getTotalTimeStatusInSeconds = () => {
     }
 
     return totalSeconds;
-}
-
-const getPlaybackSpeed = () => {
-    return getVideoElement().playbackRate;
-}
-
-const getVideoElement = () => {
-    return document.getElementsByTagName("video")[document.getElementsByTagName("video").length - 1];
-}
-
-const format = (input) => {
-    let hours = 0;
-    let minutes = 0;
-    let seconds = 0;
-
-    hours = Math.floor(input / 3600);
-    minutes = Math.floor(((input / 3600) - hours) * 60);
-    seconds = Math.floor(((((input / 3600) - hours) * 60) - minutes) * 60);
-
-    if (hours < 10) hours = "0" + hours;
-    if (minutes < 10) minutes = "0" + minutes;
-    if (seconds < 10) seconds = "0" + seconds;
-
-    if (hours == 0) {
-        return `${minutes}:${seconds}`;
-    }
-
-    return `${hours}:${minutes}:${seconds}`;
 }
 
 const addToPage = (totalTime) => {
