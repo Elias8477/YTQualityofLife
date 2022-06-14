@@ -1,5 +1,6 @@
 let highlightedVideos = new Map();
 let keywords = [];
+let autoKeywords = [];
 let option;
 let sectionRenderListLength = 1;
 let autoHighlightListShown = false;
@@ -70,7 +71,7 @@ const buildHighlightHTML = () => {
     searchButton.appendChild(searchText);
 
     let autoHighlightAddText = document.createElement("p");
-    autoHighlightAddText.innerHTML = "add";
+    autoHighlightAddText.innerHTML = "Add";
     autoHighlightAddText.setAttribute("class", "buttonText hidden");
     autoHighlightAddText.setAttribute("id", "autoHighlightAddText");
     searchButton.appendChild(autoHighlightAddText);
@@ -104,7 +105,7 @@ const buildHighlightHTML = () => {
     let toggleButton = document.createElement("button");
     toggleButton.setAttribute("id", "toggleButton");
     toggleButton.setAttribute("class", "button");
-    toggleButton.innerHTML = "show auto highlighted";
+    toggleButton.innerHTML = "Show auto highlighted";
     gridWrapper.appendChild(toggleButton);
 
 
@@ -124,7 +125,6 @@ const buildHighlightHTML = () => {
         }
     });
 
-    //TODO change text & icon depending on if auto highlighted is shown
     searchButton.addEventListener("click", () => {
         let keywordsInput = inputField.value.toLowerCase().split(" ").filter(Boolean);
 
@@ -173,10 +173,11 @@ const buildAutoHighlightList = (wrapper) => {
 }
 
 const getAutoHighlightedWords = async () => {
-    let keywords = await getLocalStorage("autoHighlightList");
+    autoKeywords = await getLocalStorage("autoHighlightList");
+    if (autoKeywords == null) autoKeywords = [];
     let listElement = document.querySelector("#autoKeywordList");
 
-    keywords.forEach(keyword => {
+    autoKeywords.forEach(keyword => {
         highlight(keyword);
 
         let keywordElement = document.createElement("li");
@@ -187,29 +188,26 @@ const getAutoHighlightedWords = async () => {
 }
 
 const autoHighlight = async (keyword) => {
+    if (autoKeywords.includes(keyword)) return;
+
     let listElement = document.querySelector("#autoKeywordList");
-    let keywordList = await getLocalStorage("autoHighlightList");
-    if (!Array.isArray(keywordList)) keywordList = [];
-
-    if (keywordList.includes(keyword)) return;
-
     let keywordElement = document.createElement("li");
     keywordElement.innerHTML = keyword;
     keywordElement.setAttribute("class", "keyword")
     listElement.appendChild(keywordElement);
 
-    keywordList.push(keyword);
-    setLocalStorage("autoHighlightList", keywordList);
+    highlight(keyword);
+    autoKeywords.push(keyword);
+    setLocalStorage("autoHighlightList", autoKeywords);
 }
 
 const removeFromAutoHighlightList = async (element) => {
     let keyword = element.innerHTML;
-    let keywordList = await getLocalStorage("autoHighlightList");
-    keywordList = keywordList.filter(k => k !== keyword);
+    autoKeywords = autoKeywords.filter(k => k !== keyword);
 
     //remove <li> from the HTML keyword wrapper
     element.remove();
-    setLocalStorage("autoHighlightList", keywordList);
+    setLocalStorage("autoHighlightList", autoKeywords);
 }
 
 const toggleAutoHighlightList = () => {
@@ -220,9 +218,9 @@ const toggleAutoHighlightList = () => {
     let autoKeywordList = document.querySelector("#autoKeywordList");
 
     if (autoHighlightListShown) {
-        toggleButton.innerHTML = "show currently highlighted";
+        toggleButton.innerHTML = "Show currently highlighted";
     } else {
-        toggleButton.innerHTML = "show auto highlighted";
+        toggleButton.innerHTML = "Show auto highlighted";
     }
 
     highlightedKeywordList.classList.toggle("hidden");
@@ -314,10 +312,16 @@ const unhighlight = (element) => {
 }
 
 const resetHighlight = () => {
-    Array.from(highlightedVideos.keys()).forEach(video => video.classList.remove("highlighted"));
-    highlightedVideos.clear();
-    keywords.length = 0;
-    document.getElementById("keywordList").innerHTML = "";
+    if (autoHighlightListShown) {
+        chrome.storage.local.remove("autoHighlightList");
+        autoKeywords.length = 0;
+        document.querySelector("#autoKeywordList").innerHTML = "";
+    } else {
+        Array.from(highlightedVideos.keys()).forEach(video => video.classList.remove("highlighted"));
+        highlightedVideos.clear();
+        keywords.length = 0;
+        document.querySelector("#highlightedKeywordList").innerHTML = "";
+    }
 }
 
 const updateKeywordCount = () => {
