@@ -24,7 +24,7 @@ const setPlaylistTotalWatchtimeCounterObserver = () => {
 }
 
 const updateSpan = () => {
-    let totalSeconds = format(getTotalTimeStatusInSeconds() /* / getPlaybackSpeed() */);
+    let totalSeconds = format(getTotalTimeStatusInSeconds() / getPlaybackSpeed());
     addToPage(totalSeconds);
 }
 
@@ -54,7 +54,11 @@ const getTotalTimeStatusInSeconds = () => {
 }
 
 const getPlaybackSpeed = () => {
-    // return document.getElementsByTagName("video")[0].playbackRate;
+    return getVideoElement().playbackRate;
+}
+
+const getVideoElement = () => {
+    return document.getElementsByTagName("video")[document.getElementsByTagName("video").length - 1];
 }
 
 const format = (input) => {

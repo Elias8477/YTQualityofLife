@@ -7,7 +7,7 @@ const PlaylistAutoplayDisabledSetup = () => {
     playlistAutoplayDisabledInitialized = true;
 
     console.log("PlaylistAutoplayDisabled Enabled");
-    let videoElement = document.getElementsByTagName("video")[document.getElementsByTagName("video").length - 1];
+    let videoElement = getVideoElement();
 
     setInterval(() => {
         let totalTime = videoElement.duration;

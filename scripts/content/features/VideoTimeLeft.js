@@ -25,7 +25,7 @@ const createHTML = () => {
 }
 
 const updateTimeLeft = () => {
-    let videoElement = document.getElementsByTagName("video")[document.getElementsByTagName("video").length - 1];
+    let videoElement = getVideoElement();
     let totalTime = videoElement.duration;
     let currentTime = videoElement.currentTime;
     let playbackSpeed = videoElement.playbackRate;
