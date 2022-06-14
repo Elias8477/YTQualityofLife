@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Youtube QOLT",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Youtube Quality of Life Tweaks",
   "permissions": [
     "activeTab",
@@ -11,6 +11,7 @@
     {
       "matches": ["https://www.youtube.com/*"],
       "js": [
+        "scripts/utils.js", 
         "scripts/content/main.js", 
         "scripts/content/features/Highlight.js",
         "scripts/content/features/PlaylistAutoplayDisabled.js",

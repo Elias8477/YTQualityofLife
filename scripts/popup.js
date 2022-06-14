@@ -1,5 +1,5 @@
 const popupSetup = () => {
-    loadSettings()
+    loadSettings();
     setPopupEventlisteners();
     setAppVersion();
 
@@ -10,6 +10,21 @@ const popupSetup = () => {
     }
 
     document.getElementById("resetButton").addEventListener("click", resetToDefault);
+}
+
+const loadSettings = () => {
+    chrome.storage.local.get(null, items => { //An empty list or object will return an empty result object. Pass in null to get the entire contents of storage.
+        let allKeys = Object.keys(items);
+        for (let i = 0; i < allKeys.length; i++) {
+            let key = allKeys[i]
+
+            chrome.storage.local.get([key], result => {
+                if (document.getElementById(key) != null) {
+                    document.getElementById(key).checked = result[key];
+                }
+            });
+        }
+    });
 }
 
 const setPopupEventlisteners = () => {
@@ -28,22 +43,22 @@ const setPopupEventlisteners = () => {
 }
 
 const setInfo = (text) => {
-   document.querySelectorAll(".info").forEach(element => {
-    element.classList.add("hidden");
-   })
+    document.querySelectorAll(".info").forEach(element => {
+        element.classList.add("hidden");
+    })
 
-   let textElement = document.querySelector("#feature-information-location");
+    let textElement = document.querySelector("#feature-information-location");
 
-   textElement.innerHTML = text;
-   textElement.classList.remove("hidden");
+    textElement.innerHTML = text;
+    textElement.classList.remove("hidden");
 }
 
 const clearInfo = () => {
     document.querySelectorAll(".info").forEach(element => {
         element.classList.remove("hidden");
-       })
+    })
 
-   document.querySelector("#feature-information-location").classList.add("hidden");
+    document.querySelector("#feature-information-location").classList.add("hidden");
 }
 
 const setAppVersion = () => {
@@ -74,26 +89,12 @@ const checkSettings = (event) => {
 
 const saveSetting = (element) => {
     let id = element.getAttribute("id");
-    chrome.storage.sync.set({ [id]: element.checked })
-}
-
-const loadSettings = () => {
-    chrome.storage.sync.get(null, items => { //An empty list or object will return an empty result object. Pass in null to get the entire contents of storage.
-        let allKeys = Object.keys(items);
-        for (let i = 0; i < allKeys.length; i++) {
-            let key = allKeys[i]
-
-            chrome.storage.sync.get([key], result => {
-                if (document.getElementById(key) != null) {
-                    document.getElementById(key).checked = result[key];
-                }
-            });
-        }
-    });
+    chrome.storage.local.set({ [id]: element.checked })
 }
 
 const resetToDefault = () => {
-    chrome.storage.sync.clear()
+    chrome.storage.sync.clear();
+    chrome.storage.local.clear();
 
     let features = document.getElementsByClassName("feature");
     for (let i = 0; i < features.length; i++) {

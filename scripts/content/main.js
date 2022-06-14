@@ -3,9 +3,11 @@ let features;
 
 const main = async () => {
     console.log("YTQoL loading");
-    features = await getAllFeatures();
+    features = await getAllLocalStorage();
     setUrlChangeListener();
     injectFeatures();
+
+    // consoleLogAllStorage();
 }
 
 const setUrlChangeListener = () => {
@@ -16,18 +18,6 @@ const setUrlChangeListener = () => {
             injectFeatures();
         }
     }, 1000);
-}
-
-const getAllFeatures = async () => {
-    return new Promise((resolve, reject) => {
-        try {
-            chrome.storage.sync.get(null, (items) => {
-                resolve(items);
-            });
-        } catch (ex) {
-            reject(ex);
-        }
-    })
 }
 
 const injectFeatures = () => {

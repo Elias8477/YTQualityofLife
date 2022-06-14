@@ -35,14 +35,14 @@ const updateTimeLeft = () => {
     document.querySelector(".ytp-time-left").innerHTML = timeLeft;
 }
 
-const checkWhichElementToHide = () => {
-    chrome.storage.sync.get("VideoTimeLeftShown", item => {
-        if (item.VideoTimeLeftShown) {
-            timeWrapperElement.querySelector(".ytp-time-current").classList.add("hidden");
-        } else {
-            timeWrapperElement.querySelector(".ytp-time-left").classList.add("hidden");
-        }
-    })
+const checkWhichElementToHide = async () => {
+    let item = await getLocalStorage("VideoTimeLeftShown");
+
+    if (item.VideoTimeLeftShown) {
+        timeWrapperElement.querySelector(".ytp-time-current").classList.add("hidden");
+    } else {
+        timeWrapperElement.querySelector(".ytp-time-left").classList.add("hidden");
+    }
 }
 
 const setVideoTimeLeftObserver = () => {
@@ -59,6 +59,6 @@ const setClickListener = () => {
 
         //save UI state to reload on the next video / page refresh
         timeLeftShown = !timeLeftShown
-        chrome.storage.sync.set({ ["VideoTimeLeftShown"]: timeLeftShown })
+        setLocalStorage("VideoTimeLeftShown", timeLeftShown);
     });
 }
