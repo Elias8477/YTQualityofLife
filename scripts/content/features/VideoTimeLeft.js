@@ -38,7 +38,7 @@ const updateTimeLeft = () => {
 const checkWhichElementToHide = async () => {
     let item = await getLocalStorage("VideoTimeLeftShown");
 
-    if (item.VideoTimeLeftShown) {
+    if (item) {
         timeWrapperElement.querySelector(".ytp-time-current").classList.add("hidden");
     } else {
         timeWrapperElement.querySelector(".ytp-time-left").classList.add("hidden");
