@@ -178,7 +178,7 @@ const getAutoHighlightedWords = async () => {
         highlight(keyword);
 
         let keywordElement = document.createElement("li");
-        keywordElement.innerHTML = keyword;
+        keywordElement.innerHTML = capitalizeFirstLetterOfWords(keyword);
         keywordElement.setAttribute("class", "keyword")
         listElement.appendChild(keywordElement);
     })
@@ -229,8 +229,6 @@ const highlight = (keyword) => {
 
     addKeywordToHTML(keyword);
     updateKeywordCount();
-    console.log(highlightedVideos);
-    console.log(keywords);
 }
 
 const autoHighlight = async (keyword) => {
@@ -238,12 +236,13 @@ const autoHighlight = async (keyword) => {
 
     let listElement = document.querySelector("#autoKeywordList");
     let keywordElement = document.createElement("li");
-    keywordElement.innerHTML = keyword;
+    keywordElement.innerHTML = capitalizeFirstLetterOfWords(keyword);
     keywordElement.setAttribute("class", "keyword")
     listElement.appendChild(keywordElement);
 
     highlight(keyword);
     autoKeywords.push(keyword);
+    autoKeywords.sort();
     setLocalStorage("autoHighlightList", autoKeywords);
 }
 
@@ -270,7 +269,7 @@ const addKeywordToHTML = (currentKeyword) => {
     let keywordElement = document.createElement("li");
     keywordElement.setAttribute("class", "keyword");
     keywordElement.setAttribute("data-count", "0");
-    keywordElement.innerHTML = currentKeyword
+    keywordElement.innerHTML = capitalizeFirstLetterOfWords(currentKeyword);
     keywordListWrapper.appendChild(keywordElement);
     keywords.push(currentKeyword);
 }
@@ -346,4 +345,14 @@ const getKeywordCount = () => {
 
 const cleanString = (string) => {
     return string.replace(/\s+/g, ' ').trim();
+}
+
+const capitalizeFirstLetterOfWords = (string) => {
+    let words = string.split(" ");
+
+    words.forEach((word, index, array) => {
+        array[index] = word.charAt(0).toUpperCase() + word.slice(1);
+    });
+
+    return words.join(" ");
 }
