@@ -1,8 +1,7 @@
 let highlightedVideos = new Map();
 let keywords = [];
 let autoKeywords = [];
-let option;
-let sectionRenderListLength = 1;
+let sectionRenderListLength = 0;
 let autoHighlightListShown = false;
 
 const highlightSetup = () => {
@@ -84,8 +83,6 @@ const buildHighlightHTML = () => {
     autoHighlightAddButton.setAttribute("class", "button hidden");
 
 
-
-
     //reset button
     let resetButton = document.createElement("button");
     resetButton.setAttribute("id", "resetButton");
@@ -113,12 +110,12 @@ const buildHighlightHTML = () => {
     inputField.addEventListener("keyup", event => {
         event.preventDefault();
         if (event.key === "Enter") {
-            let keywordsInput = inputField.value.toLowerCase().split(" ").filter(Boolean);
+            let keywordsInput = inputField.value.toLowerCase().split(",").filter(Boolean);
 
             if (autoHighlightListShown) {
-                keywordsInput.forEach(keyword => autoHighlight(keyword));
+                keywordsInput.forEach(keyword => autoHighlight(cleanString(keyword)));
             } else {
-                keywordsInput.forEach(keyword => highlight(keyword));
+                keywordsInput.forEach(keyword => highlight(cleanString(keyword)));
             }
 
             inputField.value = ""
@@ -126,12 +123,12 @@ const buildHighlightHTML = () => {
     });
 
     searchButton.addEventListener("click", () => {
-        let keywordsInput = inputField.value.toLowerCase().split(" ").filter(Boolean);
+        let keywordsInput = inputField.value.toLowerCase().split(",").filter(Boolean);
 
         if (autoHighlightListShown) {
-            keywordsInput.forEach(keyword => autoHighlight(keyword));
+            keywordsInput.forEach(keyword => autoHighlight(cleanString(keyword)));
         } else {
-            keywordsInput.forEach(keyword => highlight(keyword));
+            keywordsInput.forEach(keyword => highlight(cleanString(keyword)));
         }
 
         inputField.value = ""
@@ -187,29 +184,6 @@ const getAutoHighlightedWords = async () => {
     })
 }
 
-const autoHighlight = async (keyword) => {
-    if (autoKeywords.includes(keyword)) return;
-
-    let listElement = document.querySelector("#autoKeywordList");
-    let keywordElement = document.createElement("li");
-    keywordElement.innerHTML = keyword;
-    keywordElement.setAttribute("class", "keyword")
-    listElement.appendChild(keywordElement);
-
-    highlight(keyword);
-    autoKeywords.push(keyword);
-    setLocalStorage("autoHighlightList", autoKeywords);
-}
-
-const removeFromAutoHighlightList = async (element) => {
-    let keyword = element.innerHTML;
-    autoKeywords = autoKeywords.filter(k => k !== keyword);
-
-    //remove <li> from the HTML keyword wrapper
-    element.remove();
-    setLocalStorage("autoHighlightList", autoKeywords);
-}
-
 const toggleAutoHighlightList = () => {
     autoHighlightListShown = !autoHighlightListShown;
     let toggleButton = document.querySelector("#toggleButton");
@@ -234,40 +208,55 @@ const toggleAutoHighlightList = () => {
 const highlight = (keyword) => {
     let videoArray = document.getElementsByTagName("ytd-grid-video-renderer");
 
-    let currentVideo = "";
-    let videoTitle = "";
-    let videoTitleWordsArray = "";
-
     for (let i = 0; i < videoArray.length; i++) {
-        currentVideo = videoArray[i]
-        videoTitle = currentVideo.querySelector(`a[id^="video-title"]`).innerHTML;
-        videoTitleWordsArray = videoTitle.split(" ").map(word => word.toLowerCase());
-        let titleContainsKeyword = false;
-        let j = 0;
+        let video = videoArray[i];
+        let videoTitle = video.querySelector(`a[id^="video-title"]`).innerHTML;
+        videoTitle = cleanString(videoTitle).toLowerCase();
 
-        while (!titleContainsKeyword && j < videoTitleWordsArray.length) {
-            if (videoTitleWordsArray[j] === keyword) {
-                titleContainsKeyword = true;
-                currentVideo.classList.add("highlighted");
+        if (videoTitle.indexOf(keyword) != -1) {
+            video.classList.add("highlighted");
 
-                let list = highlightedVideos.get(currentVideo);
-                if (list == null) {
-                    list = [keyword];
-                } else if (list.includes(keyword)) { }
-                else {
-                    list.push(keyword);
-                }
-                highlightedVideos.set(currentVideo, list);
+            let list = highlightedVideos.get(video);
+            if (list == null) {
+                list = [keyword];
+            } else if (list.includes(keyword)) { }
+            else {
+                list.push(keyword);
             }
-            j++
+            highlightedVideos.set(video, list);
         }
     }
 
-    addHighlightedWordToList(keyword);
+    addKeywordToHTML(keyword);
     updateKeywordCount();
+    console.log(highlightedVideos);
+    console.log(keywords);
 }
 
-const addHighlightedWordToList = (currentKeyword) => {
+const autoHighlight = async (keyword) => {
+    if (autoKeywords.includes(keyword)) return;
+
+    let listElement = document.querySelector("#autoKeywordList");
+    let keywordElement = document.createElement("li");
+    keywordElement.innerHTML = keyword;
+    keywordElement.setAttribute("class", "keyword")
+    listElement.appendChild(keywordElement);
+
+    highlight(keyword);
+    autoKeywords.push(keyword);
+    setLocalStorage("autoHighlightList", autoKeywords);
+}
+
+const removeFromAutoHighlightList = async (element) => {
+    let keyword = element.innerHTML;
+    autoKeywords = autoKeywords.filter(k => k !== keyword);
+
+    //remove <li> from the HTML keyword wrapper
+    element.remove();
+    setLocalStorage("autoHighlightList", autoKeywords);
+}
+
+const addKeywordToHTML = (currentKeyword) => {
     let keywordListWrapper = document.getElementById("highlightedKeywordList");
     let keywordList = document.querySelector("#highlightedKeywordList").querySelectorAll(".keyword");
     let exists = false
@@ -353,4 +342,8 @@ const getKeywordCount = () => {
     });
 
     return count;
+}
+
+const cleanString = (string) => {
+    return string.replace(/\s+/g, ' ').trim();
 }
