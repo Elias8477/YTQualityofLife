@@ -236,8 +236,10 @@ const highlight = (keyword) => {
         let video = videoArray[i];
         let videoTitle = video.querySelector(`a[id^="video-title"]`).innerHTML;
         videoTitle = cleanString(videoTitle).toLowerCase();
+        let channelName = video.querySelector("#text > a").innerHTML;
+        channelName = cleanString(channelName).toLowerCase();
 
-        if (videoTitle.indexOf(keyword) != -1) {
+        if (videoTitle.indexOf(keyword) != -1 || channelName.indexOf(keyword) != -1) {
             video.classList.add("highlighted");
 
             let list = highlightedVideos.get(video);
@@ -278,6 +280,7 @@ const unhighlight = (element) => {
     element.remove();
     keywords = keywords.filter(k => k !== keyword)
     updateKeywordCount();
+    console.log(highlightedVideos)
 }
 
 const resetHighlight = () => {
