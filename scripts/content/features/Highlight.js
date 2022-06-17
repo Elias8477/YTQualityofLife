@@ -221,7 +221,7 @@ const autoHighlight = async (keyword) => {
 }
 
 const removeFromAutoHighlightList = async (element) => {
-    let keyword = element.innerHTML;
+    let keyword = element.innerHTML.toLowerCase();
     autoKeywords = autoKeywords.filter(k => k !== keyword);
 
     //remove <li> from the HTML keyword wrapper
@@ -258,7 +258,7 @@ const highlight = (keyword) => {
 }
 
 const unhighlight = (element) => {
-    let keyword = element.innerHTML;
+    let keyword = element.innerHTML.toLowerCase();
 
     //search videos where title matches current keyword and does not match any other keywords
     highlightedVideos.forEach((keywords, video) => {
@@ -280,7 +280,6 @@ const unhighlight = (element) => {
     element.remove();
     keywords = keywords.filter(k => k !== keyword)
     updateKeywordCount();
-    console.log(highlightedVideos)
 }
 
 const resetHighlight = () => {
@@ -302,7 +301,7 @@ const addKeywordToHTML = (currentKeyword) => {
     let exists = false
 
     keywordList.forEach(keyword => {
-        if (keyword.innerHTML === currentKeyword) exists = true;
+        if (keyword.innerHTML.toLowerCase() === currentKeyword) exists = true;
     })
 
     if (exists) return
