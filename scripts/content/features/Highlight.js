@@ -138,11 +138,11 @@ const buildHighlightHTML = () => {
     toggleButton.addEventListener("click", () => toggleAutoHighlightList());
 
     //lists
-    buildHighlightedKeywordList(wrapper);
+    buildHighlightList(wrapper);
     buildAutoHighlightList(wrapper);
 }
 
-const buildHighlightedKeywordList = (wrapper) => {
+const buildHighlightList = (wrapper) => {
     let keywordListWrapper = document.createElement("div");
     keywordListWrapper.setAttribute("id", "HighlightedKeywordListWrapper");
     wrapper.appendChild(keywordListWrapper);
@@ -205,32 +205,6 @@ const toggleAutoHighlightList = () => {
     });
 }
 
-const highlight = (keyword) => {
-    let videoArray = document.getElementsByTagName("ytd-grid-video-renderer");
-
-    for (let i = 0; i < videoArray.length; i++) {
-        let video = videoArray[i];
-        let videoTitle = video.querySelector(`a[id^="video-title"]`).innerHTML;
-        videoTitle = cleanString(videoTitle).toLowerCase();
-
-        if (videoTitle.indexOf(keyword) != -1) {
-            video.classList.add("highlighted");
-
-            let list = highlightedVideos.get(video);
-            if (list == null) {
-                list = [keyword];
-            } else if (list.includes(keyword)) { }
-            else {
-                list.push(keyword);
-            }
-            highlightedVideos.set(video, list);
-        }
-    }
-
-    addKeywordToHTML(keyword);
-    updateKeywordCount();
-}
-
 const autoHighlight = async (keyword) => {
     if (autoKeywords.includes(keyword)) return;
 
@@ -255,23 +229,30 @@ const removeFromAutoHighlightList = async (element) => {
     setLocalStorage("autoHighlightList", autoKeywords);
 }
 
-const addKeywordToHTML = (currentKeyword) => {
-    let keywordListWrapper = document.getElementById("highlightedKeywordList");
-    let keywordList = document.querySelector("#highlightedKeywordList").querySelectorAll(".keyword");
-    let exists = false
+const highlight = (keyword) => {
+    let videoArray = document.getElementsByTagName("ytd-grid-video-renderer");
 
-    keywordList.forEach(keyword => {
-        if (keyword.innerHTML === currentKeyword) exists = true;
-    })
+    for (let i = 0; i < videoArray.length; i++) {
+        let video = videoArray[i];
+        let videoTitle = video.querySelector(`a[id^="video-title"]`).innerHTML;
+        videoTitle = cleanString(videoTitle).toLowerCase();
 
-    if (exists) return
+        if (videoTitle.indexOf(keyword) != -1) {
+            video.classList.add("highlighted");
 
-    let keywordElement = document.createElement("li");
-    keywordElement.setAttribute("class", "keyword");
-    keywordElement.setAttribute("data-count", "0");
-    keywordElement.innerHTML = capitalizeFirstLetterOfWords(currentKeyword);
-    keywordListWrapper.appendChild(keywordElement);
-    keywords.push(currentKeyword);
+            let list = highlightedVideos.get(video);
+            if (list == null) {
+                list = [keyword];
+            } else if (list.includes(keyword)) { }
+            else {
+                list.push(keyword);
+            }
+            highlightedVideos.set(video, list);
+        }
+    }
+
+    addKeywordToHTML(keyword);
+    updateKeywordCount();
 }
 
 const unhighlight = (element) => {
@@ -312,12 +293,31 @@ const resetHighlight = () => {
     }
 }
 
+const addKeywordToHTML = (currentKeyword) => {
+    let keywordListWrapper = document.getElementById("highlightedKeywordList");
+    let keywordList = document.querySelector("#highlightedKeywordList").querySelectorAll(".keyword");
+    let exists = false
+
+    keywordList.forEach(keyword => {
+        if (keyword.innerHTML === currentKeyword) exists = true;
+    })
+
+    if (exists) return
+
+    let keywordElement = document.createElement("li");
+    keywordElement.setAttribute("class", "keyword");
+    keywordElement.setAttribute("data-count", "0");
+    keywordElement.innerHTML = capitalizeFirstLetterOfWords(currentKeyword);
+    keywordListWrapper.appendChild(keywordElement);
+    keywords.push(currentKeyword);
+}
+
 const updateKeywordCount = () => {
     let count = getKeywordCount();
     let keywordList = document.querySelector("#highlightedKeywordList").querySelectorAll(".keyword");
 
     keywordList.forEach(keywordElement => {
-        let keyword = keywordElement.innerHTML;
+        let keyword = keywordElement.innerHTML.toLocaleLowerCase();
         let keywordCount = count.get(keyword);
 
         if (keywordCount == null) keywordCount = 0;
